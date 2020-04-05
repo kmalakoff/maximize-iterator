@@ -1,0 +1,43 @@
+{
+  "name": "maximize-iterator",
+  "version": "1.0.0",
+  "description": "Maximize the parallel calls of an iterator supporting asyncIterator interface",
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha . test/**/*.test.js",
+    "lint": "eslint .",
+    "format": "prettier --write '**/*.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kmalakoff/maximize-iterator.git"
+  },
+  "keywords": [
+    "maximize",
+    "limit",
+    "parallel",
+    "concurrent",
+    "iterator",
+    "asyncIterator",
+    "Symbol.asyncIterator"
+  ],
+  "author": "Kevin Malakoff <kmalakoff@gmail.com> (https://github.com/kmalakoff)",
+  "license": "MIT",
+  "homepage": "https://github.com/kmalakoff/maximize-iterator",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "mocha": "^7.1.1",
+    "prettier": "^2.0.2"
+  }
+}
