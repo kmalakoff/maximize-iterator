@@ -2,7 +2,7 @@ var callOnce = require('./lib/callOnce');
 var callIteratorsCallback = require('./lib/callIteratorsCallback');
 
 const HAS_ASYNC_ITERATOR = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
-var isAsyncIterator = require('./lib/isAsyncIterator');
+var useAsyncIterator = require('./lib/useAsyncIterator');
 var callIteratorsAsyncIterator = HAS_ASYNC_ITERATOR ? require('./lib/callIteratorsAsyncIterator') : null;
 
 var DEFAULT_CONCURRENCY = 4096;
@@ -22,7 +22,7 @@ module.exports = function maximizeIterator(iterator, options, callback) {
   };
 
   if (typeof callback === 'function') {
-    if (HAS_ASYNC_ITERATOR && isAsyncIterator(iterator)) return callIteratorsAsyncIterator(iterator, options, callOnce(callback));
+    if (useAsyncIterator(iterator)) return callIteratorsAsyncIterator(iterator, options, callOnce(callback));
     else return callIteratorsCallback(iterator, options, callOnce(callback));
   }
   return new Promise(function (resolve, reject) {
