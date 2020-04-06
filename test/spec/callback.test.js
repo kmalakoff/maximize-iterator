@@ -6,8 +6,8 @@ class Iterator {
     this.values = values;
   }
   next(callback) {
-    if (!this.values.length) return callback(null, { done: true });
-    return callback(null, { done: false, value: this.values.shift() });
+    if (!this.values.length) return callback(null, null);
+    return callback(null, this.values.shift());
   }
 }
 
