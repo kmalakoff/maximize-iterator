@@ -11,8 +11,8 @@ Iterator.prototype[Symbol.asyncIterator] = function () {
 
   function nextPromise() {
     return new Promise(function (resolve) {
-      if (!self.values.length) return resolve(null);
-      return resolve(self.values.shift());
+      var value = self.values.length ? self.values.shift() : null;
+      return resolve({ value: value, done: value === null });
     });
   }
 };
