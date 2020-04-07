@@ -1,6 +1,6 @@
 {
   "name": "maximize-iterator",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Maximize the parallel calls of an iterator supporting asyncIterator interface",
   "main": "index.js",
   "engines": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha . test/**/*.test.js",
-    "lint": "eslint .",
+    "lint": " ",
     "format": "prettier --write '**/*.js'"
   },
   "repository": {
