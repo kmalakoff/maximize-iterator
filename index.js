@@ -16,7 +16,7 @@ module.exports = function maximizeIterator(iterator, options, callback) {
     options = {
       concurrency: options.concurrency || DEFAULT_CONCURRENCY,
       batch: options.batch || MAXIMUM_BATCH,
-      each: options.each,
+      each: options.each || function (err, value) {},
       counter: 0,
     };
 
