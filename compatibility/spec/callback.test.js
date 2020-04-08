@@ -10,7 +10,7 @@ Iterator.prototype.next = function (callback) {
   return callback(null, this.values.shift());
 };
 
-describe('done interface', function () {
+describe('callback interface', function () {
   it('should get all (default options)', function (done) {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 

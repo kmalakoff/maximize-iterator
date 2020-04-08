@@ -1,16 +1,23 @@
 var assert = require('assert');
-var maximizeIterator = require('../../..');
+var maximizeIterator = require('../..');
 
 function Iterator(values) {
   this.values = values;
 }
 
-Iterator.prototype.next = function (callback) {
-  if (!this.values.length) return callback(null, null);
-  return callback(null, this.values.shift());
+Iterator.prototype[Symbol.asyncIterator] = function () {
+  var self = this;
+  return { next: nextPromise };
+
+  function nextPromise() {
+    return new Promise(function (resolve) {
+      var value = self.values.length ? self.values.shift() : null;
+      return resolve({ value: value, done: value === null });
+    });
+  }
 };
 
-describe('async await', function () {
+describe('asyncIterator', function () {
   it('should get all (default options)', async function () {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
