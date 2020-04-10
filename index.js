@@ -4,9 +4,10 @@ var callOnce = require('call-once-next-tick');
 var maximizeNext = require('./lib/maximizeNext');
 
 var DEFAULT_CONCURRENCY = 4096;
-var MAXIMUM_BATCH = 100;
+var MAXIMUM_BATCH = 10;
 
-module.exports = function maximizeIterator(iterator, options, callback) {
+module.exports = function maximizeIterator(iterator, fn, options, callback) {
+  if (typeof fn !== 'function') throw new Error('Missing each function');
   if (typeof options === 'function') {
     callback = options;
     options = {};
@@ -17,16 +18,21 @@ module.exports = function maximizeIterator(iterator, options, callback) {
     options = {
       concurrency: options.concurrency || DEFAULT_CONCURRENCY,
       batch: options.batch || MAXIMUM_BATCH,
-      each: options.each || function () {},
+      each: fn,
       counter: 0,
     };
 
-    maximizeNext(nextCallback(iterator), options, callOnce(callback));
+    maximizeNext(nextCallback(iterator), options, callback);
   } else {
     return new Promise(function (resolve, reject) {
-      maximizeIterator(iterator, options, function (err) {
-        err ? reject(err) : resolve();
-      });
+      maximizeIterator(
+        iterator,
+        fn,
+        options,
+        callOnce(function (err) {
+          err ? reject(err) : resolve();
+        })
+      );
     });
   }
 };

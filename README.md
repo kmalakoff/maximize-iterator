@@ -8,12 +8,12 @@ const maximize = require('maximize-iterator');
 (async ()=> {
   // run 1024 in parallel until done - promises
   var iterator = // create it somehow with a next method returing {done: value: }
-  await maximize(iterator, { concurrency: 1024, each: (err, value) => { /* do something including false stop */ } });
+  await maximize(iterator, (err, value) => { /* do something including false stop */ }, { concurrency: 1024 });
 })();
 
 // run 1024 in parallel until done - callbacks
 var iterator = // create it somehow with a next method returing {done: value: }
-maximize(iterator, { concurrency: 1024, each: (err, value) => { /* do something including false stop */ } }, (err) => {
+maximize(iterator, (err, value) => { /* do something including false stop */ }, { concurrency: 1024 }, (err) => {
   /* done */
 });
 ```

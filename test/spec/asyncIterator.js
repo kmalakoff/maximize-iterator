@@ -22,7 +22,7 @@ describe('asyncIterator', function () {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     try {
-      await maximizeIterator(iterator);
+      await maximizeIterator(iterator, function () {});
     } catch (err) {
       assert.ok(!err);
     }
@@ -34,12 +34,15 @@ describe('asyncIterator', function () {
 
     var results = [];
     try {
-      await maximizeIterator(iterator, {
-        concurrency: 1,
-        each: function (err, value) {
+      await maximizeIterator(
+        iterator,
+        function (err, value) {
           results.push(value);
         },
-      });
+        {
+          concurrency: 1,
+        }
+      );
       assert.equal(iterator.values.length, 0);
       assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     } catch (err) {
@@ -52,12 +55,15 @@ describe('asyncIterator', function () {
 
     var results = [];
     try {
-      await maximizeIterator(iterator, {
-        concurrency: 100,
-        each: function (err, value) {
+      await maximizeIterator(
+        iterator,
+        function (err, value) {
           results.push(value);
         },
-      });
+        {
+          concurrency: 100,
+        }
+      );
     } catch (err) {
       assert.ok(!err);
     }
@@ -70,13 +76,16 @@ describe('asyncIterator', function () {
 
     var results = [];
     try {
-      await maximizeIterator(iterator, {
-        concurrency: 1,
-        each: async function (err, value) {
+      await maximizeIterator(
+        iterator,
+        async function (err, value) {
           results.push(value);
           return true;
         },
-      });
+        {
+          concurrency: 1,
+        }
+      );
     } catch (err) {
       assert.ok(!err);
     }
@@ -89,14 +98,17 @@ describe('asyncIterator', function () {
 
     var results = [];
     try {
-      await maximizeIterator(iterator, {
-        concurrency: 1,
-        each: async function (err, value) {
+      await maximizeIterator(
+        iterator,
+        async function (err, value) {
           if (value === 3) return false;
           results.push(value);
           return true;
         },
-      });
+        {
+          concurrency: 1,
+        }
+      );
     } catch (err) {
       assert.ok(!err);
     }
