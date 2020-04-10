@@ -14,11 +14,15 @@ describe('callback interface', function () {
   it('should get all (default options)', function (done) {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    maximizeIterator(iterator, function (err) {
-      assert.ok(!err);
-      assert.equal(iterator.values.length, 0);
-      done();
-    });
+    maximizeIterator(
+      iterator,
+      function () {},
+      function (err) {
+        assert.ok(!err);
+        assert.equal(iterator.values.length, 0);
+        done();
+      }
+    );
   });
 
   it('should get all (concurrency 1)', function (done) {
@@ -27,11 +31,11 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
+      function (err, value) {
+        results.push(value);
+      },
       {
         concurrency: 1,
-        each: function (err, value) {
-          results.push(value);
-        },
       },
       function (err) {
         assert.ok(!err);
@@ -48,11 +52,11 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
+      function (err, value) {
+        results.push(value);
+      },
       {
         concurrency: 100,
-        each: function (err, value) {
-          results.push(value);
-        },
       },
       function (err) {
         assert.ok(!err);
@@ -69,12 +73,12 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
+      function (err, value) {
+        results.push(value);
+        return false;
+      },
       {
         concurrency: 1,
-        each: function (err, value) {
-          results.push(value);
-          return false;
-        },
       },
       function (err) {
         assert.ok(!err);
@@ -91,12 +95,12 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
+      function (err, value) {
+        results.push(value);
+        throw Error('Stop');
+      },
       {
         concurrency: 1,
-        each: function (err, value) {
-          results.push(value);
-          throw Error('Stop');
-        },
       },
       function (err) {
         assert.ok(err);

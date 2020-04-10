@@ -16,7 +16,7 @@ describe('promises interface', function () {
   it('should get all (default options)', function (done) {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    maximizeIterator(iterator)
+    maximizeIterator(iterator, function () {})
       .then(function () {
         assert.equal(iterator.values.length, 0);
         done();
@@ -31,12 +31,15 @@ describe('promises interface', function () {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     var results = [];
-    maximizeIterator(iterator, {
-      concurrency: 1,
-      each: function (err, value) {
+    maximizeIterator(
+      iterator,
+      function (err, value) {
         results.push(value);
       },
-    })
+      {
+        concurrency: 1,
+      }
+    )
       .then(function () {
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -52,12 +55,15 @@ describe('promises interface', function () {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     var results = [];
-    maximizeIterator(iterator, {
-      concurrency: 100,
-      each: function (err, value) {
+    maximizeIterator(
+      iterator,
+      function (err, value) {
         results.push(value);
       },
-    })
+      {
+        concurrency: 100,
+      }
+    )
       .then(function () {
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results.sort(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort());
@@ -73,13 +79,16 @@ describe('promises interface', function () {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     var results = [];
-    maximizeIterator(iterator, {
-      concurrency: 1,
-      each: function (err, value) {
+    maximizeIterator(
+      iterator,
+      function (err, value) {
         results.push(value);
         return true;
       },
-    })
+      {
+        concurrency: 1,
+      }
+    )
       .then(function () {
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -95,14 +104,17 @@ describe('promises interface', function () {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     var results = [];
-    maximizeIterator(iterator, {
-      concurrency: 1,
-      each: function (err, value) {
+    maximizeIterator(
+      iterator,
+      function (err, value) {
         if (value === 3) return false;
         results.push(value);
         return true;
       },
-    })
+      {
+        concurrency: 1,
+      }
+    )
       .then(function () {
         assert.equal(iterator.values.length, 7);
         assert.deepEqual(results, [1, 2]);
@@ -118,13 +130,16 @@ describe('promises interface', function () {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     var results = [];
-    maximizeIterator(iterator, {
-      concurrency: 1,
-      each: function (err, value) {
+    maximizeIterator(
+      iterator,
+      function (err, value) {
         results.push(value);
         return false;
       },
-    })
+      {
+        concurrency: 1,
+      }
+    )
       .then(function () {
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
@@ -140,13 +155,16 @@ describe('promises interface', function () {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     var results = [];
-    maximizeIterator(iterator, {
-      concurrency: 1,
-      each: function (err, value) {
+    maximizeIterator(
+      iterator,
+      function (err, value) {
         results.push(value);
         throw Error('Stop');
       },
-    })
+      {
+        concurrency: 1,
+      }
+    )
       .then(function () {
         assert.ok(false);
         done();
