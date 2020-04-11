@@ -6,8 +6,7 @@ function Iterator(values) {
 }
 
 Iterator.prototype.next = function (callback) {
-  if (!this.values.length) return callback(null, null);
-  return callback(null, this.values.shift());
+  callback(null, this.values.length ? this.values.shift() : null);
 };
 
 describe('callback interface', function () {
@@ -31,7 +30,7 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
       },
       {
@@ -52,7 +51,7 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
       },
       {
@@ -73,7 +72,7 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         return false;
       },
@@ -95,7 +94,7 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         throw Error('Stop');
       },
