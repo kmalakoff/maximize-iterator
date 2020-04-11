@@ -28,7 +28,7 @@ describe('async await', function () {
     try {
       await maximizeIterator(
         iterator,
-        function (err, value) {
+        function (value) {
           results.push(value);
         },
         {
@@ -49,7 +49,7 @@ describe('async await', function () {
     try {
       await maximizeIterator(
         iterator,
-        function (err, value) {
+        function (value) {
           results.push(value);
         },
         {
@@ -70,7 +70,7 @@ describe('async await', function () {
     try {
       await maximizeIterator(
         iterator,
-        async function (err, value) {
+        async function (value) {
           results.push(value);
           return true;
         },
@@ -92,7 +92,7 @@ describe('async await', function () {
     try {
       await maximizeIterator(
         iterator,
-        async function (err, value) {
+        async function (value) {
           if (value === 3) return false;
           results.push(value);
           return true;

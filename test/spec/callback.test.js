@@ -30,7 +30,7 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
       },
       {
@@ -51,7 +51,7 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
       },
       {
@@ -72,7 +72,7 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         return false;
       },
@@ -94,7 +94,7 @@ describe('callback interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         throw Error('Stop');
       },
