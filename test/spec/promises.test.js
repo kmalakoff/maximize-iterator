@@ -32,7 +32,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
       },
       {
@@ -56,7 +56,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
       },
       {
@@ -80,7 +80,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         return true;
       },
@@ -105,7 +105,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         if (value === 3) return false;
         results.push(value);
         return true;
@@ -131,7 +131,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         return false;
       },
@@ -156,7 +156,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         throw Error('Stop');
       },
