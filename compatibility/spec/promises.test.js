@@ -6,8 +6,7 @@ function Iterator(values) {
 }
 
 Iterator.prototype.next = function (callback) {
-  if (!this.values.length) return callback(null, null);
-  return callback(null, this.values.shift());
+  callback(null, this.values.length ? this.values.shift() : null);
 };
 
 describe('promises interface', function () {
@@ -33,7 +32,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
       },
       {
@@ -57,7 +56,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
       },
       {
@@ -81,7 +80,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         return true;
       },
@@ -106,7 +105,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         if (value === 3) return false;
         results.push(value);
         return true;
@@ -132,7 +131,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         return false;
       },
@@ -157,7 +156,7 @@ describe('promises interface', function () {
     var results = [];
     maximizeIterator(
       iterator,
-      function (err, value) {
+      function (value) {
         results.push(value);
         throw Error('Stop');
       },
