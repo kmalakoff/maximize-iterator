@@ -4,6 +4,7 @@ var callOnce = require('call-once-next-tick');
 var maximizeNext = require('./lib/maximizeNext');
 
 var DEFAULT_CONCURRENCY = 4096;
+var DEFAULT_LIMIT = Infinity;
 var MAXIMUM_BATCH = 10;
 
 module.exports = function maximizeIterator(iterator, fn, options, callback) {
@@ -16,9 +17,16 @@ module.exports = function maximizeIterator(iterator, fn, options, callback) {
   if (typeof callback === 'function') {
     options = options || {};
     options = {
-      concurrency: options.concurrency || DEFAULT_CONCURRENCY,
-      batch: options.batch || MAXIMUM_BATCH,
       each: fn,
+      concurrency: options.concurrency || DEFAULT_CONCURRENCY,
+      limit: options.limit || DEFAULT_LIMIT,
+      batch: options.batch || MAXIMUM_BATCH,
+      error:
+        options.error ||
+        function () {
+          return true; // default is exit on error
+        },
+      total: 0,
       counter: 0,
     };
 

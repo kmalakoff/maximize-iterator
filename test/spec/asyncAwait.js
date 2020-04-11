@@ -6,8 +6,7 @@ function Iterator(values) {
 }
 
 Iterator.prototype.next = function (callback) {
-  if (!this.values.length) return callback(null, null);
-  return callback(null, this.values.shift());
+  callback(null, this.values.length ? this.values.shift() : null);
 };
 
 describe('async await', function () {
