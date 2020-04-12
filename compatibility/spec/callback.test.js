@@ -24,6 +24,23 @@ describe('callback interface', function () {
     );
   });
 
+  it('should get all (async)', function (done) {
+    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+    maximizeIterator(
+      iterator,
+      function (value, callback) {
+        setTimeout(callback, 10);
+      },
+      { async: true },
+      function (err) {
+        assert.ok(!err);
+        assert.equal(iterator.values.length, 0);
+        done();
+      }
+    );
+  });
+
   it('should get all (concurrency 1)', function (done) {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
