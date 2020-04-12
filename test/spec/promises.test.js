@@ -37,8 +37,30 @@ describe('promises interface', function () {
 
     maximizeIterator(
       iterator,
-      function (value) {
+      function (value, callback) {
+        assert.ok(value);
+        assert.ok(!callback);
         return sleep(10);
+      },
+      function (err) {
+        assert.ok(!err);
+        assert.equal(iterator.values.length, 0);
+        done();
+      }
+    );
+  });
+
+  it('should get all (async, stop)', function (done) {
+    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+    maximizeIterator(
+      iterator,
+      function (value, callback) {
+        assert.ok(value);
+        assert.ok(!callback);
+        return sleep(10).then(function () {
+          return false;
+        });
       },
       function (err) {
         assert.ok(!err);
