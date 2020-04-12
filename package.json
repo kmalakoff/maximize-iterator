@@ -29,6 +29,7 @@
   "homepage": "https://github.com/kmalakoff/maximize-iterator",
   "dependencies": {
     "call-once-next-tick": "^1.0.0",
+    "is-promise": "^2.1.0",
     "iterator-next-callback": "^1.1.0"
   },
   "devDependencies": {

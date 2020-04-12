@@ -30,17 +30,12 @@ module.exports = function maximizeIterator(iterator, fn, options, callback) {
       counter: 0,
     };
 
-    maximizeNext(nextCallback(iterator), options, callback);
+    maximizeNext(nextCallback(iterator), options, callOnce(callback));
   } else {
     return new Promise(function (resolve, reject) {
-      maximizeIterator(
-        iterator,
-        fn,
-        options,
-        callOnce(function (err) {
-          err ? reject(err) : resolve();
-        })
-      );
+      maximizeIterator(iterator, fn, options, function (err) {
+        err ? reject(err) : resolve();
+      });
     });
   }
 };
