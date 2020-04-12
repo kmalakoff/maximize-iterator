@@ -1,7 +1,7 @@
 var nextCallback = require('iterator-next-callback');
 var callOnce = require('call-once-next-tick');
 
-var maximizeNext = require('./lib/maximizeNext');
+var forEach = require('./lib/forEach');
 
 var DEFAULT_CONCURRENCY = 4096;
 var DEFAULT_LIMIT = Infinity;
@@ -30,7 +30,7 @@ module.exports = function maximizeIterator(iterator, fn, options, callback) {
       counter: 0,
     };
 
-    maximizeNext(nextCallback(iterator), options, callOnce(callback));
+    forEach(nextCallback(iterator), options, callOnce(callback));
   } else {
     return new Promise(function (resolve, reject) {
       maximizeIterator(iterator, fn, options, function (err) {
