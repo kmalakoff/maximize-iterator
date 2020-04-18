@@ -1,7 +1,7 @@
 var nextCallback = require('iterator-next-callback');
 var callOnce = require('call-once-next-tick');
 
-var forEach = require('./lib/forEach');
+var createProcessor = require('./lib/createProcessor');
 
 var DEFAULT_CONCURRENCY = 4096;
 var DEFAULT_LIMIT = Infinity;
@@ -29,9 +29,12 @@ module.exports = function maximizeIterator(iterator, fn, options, callback) {
         },
       total: 0,
       counter: 0,
+      isDone: function (options, counter) {
+        return counter++ > options.batch;
+      },
     };
 
-    forEach(nextCallback(iterator), options, callOnce(callback));
+    createProcessor(nextCallback(iterator), options, callOnce(callback))();
   } else {
     return new Promise(function (resolve, reject) {
       maximizeIterator(iterator, fn, options, function (err) {
