@@ -29,8 +29,8 @@ module.exports = function maximizeIterator(iterator, fn, options, callback) {
         },
       total: 0,
       counter: 0,
-      isDone: function (options, counter) {
-        return counter++ > options.batch;
+      stop: function (counter) {
+        return counter > options.batch;
       },
     };
 
