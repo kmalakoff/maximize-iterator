@@ -35,6 +35,6 @@ module.exports = async function run({ maximize, version, testOptions }) {
   });
 
   console.log('Comparing ' + suite.name);
-  await suite.run({ time: 10000 });
+  await suite.run({ time: 1000 });
   console.log('****************\n');
 };
