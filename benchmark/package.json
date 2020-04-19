@@ -1,0 +1,23 @@
+{
+  "name": "fs-iterator-operations-testOptions",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Tests",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kmalakoff/fs-iterator.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "operations": "node operations/index.js",
+    "flame": "npx 0x operations/index.js",
+    "memory": "node memory/index.js",
+    "test": "npm run operations && npm run memory"
+  },
+  "dependencies": {
+    "benchmark-suite": "^0.1.1",
+    "fs-iterator-2.3.0": "npm:fs-iterator@^2.3.0",
+    "next-tick": "^1.1.0",
+    "readdirp": "^3.4.0"
+  }
+}
