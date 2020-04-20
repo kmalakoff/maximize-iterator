@@ -136,7 +136,7 @@ describe('callback interface', function () {
       iterator,
       function (value) {
         results.push(value);
-        throw Error('Stop');
+        return new Error('Stop');
       },
       {
         concurrency: 1,
