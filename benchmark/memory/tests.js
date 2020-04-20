@@ -5,8 +5,9 @@ function Iterator(counter) {
   this.counter = counter;
 }
 
-Iterator.prototype.next = function (callback) {
-  nextTick(this.counter-- <= 0 ? callback.bind(null, null, null) : callback.bind(null, null, this.counter));
+Iterator.prototype.next = function next(callback) {
+  const call = this.counter-- <= 0 ? callback.bind(null, null, null) : callback.bind(null, null, this.counter);
+  this.counter % 50 ? nextTick(call) : call();
 };
 
 module.exports = async function run({ maximize, version, testOptions }) {
@@ -18,7 +19,7 @@ module.exports = async function run({ maximize, version, testOptions }) {
 
   for (const test of testOptions) {
     suite.add(`${version}-${test.name}`, async function (fn) {
-      const iterator = new Iterator(10000);
+      const iterator = new Iterator(1000);
       await maximize(iterator, fn, test.options);
     });
   }
@@ -35,6 +36,6 @@ module.exports = async function run({ maximize, version, testOptions }) {
   });
 
   console.log('Comparing ' + suite.name);
-  await suite.run({ time: 10000, heapdumpTrigger: 1024 * 100 });
+  await suite.run({ time: 10000 }); //, heapdumpTrigger: 1024 * 20 });
   console.log('****************\n');
 };
