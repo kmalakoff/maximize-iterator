@@ -1,5 +1,5 @@
 var nextCallback = require('iterator-next-callback');
-var callOnce = require('call-once-next-tick');
+var nextTick = require('next-tick');
 
 var createProcessor = require('./lib/createProcessor');
 
@@ -34,7 +34,12 @@ module.exports = function maximizeIterator(iterator, fn, options, callback) {
       },
     };
 
-    createProcessor(nextCallback(iterator), options, callOnce(callback))();
+    var processor = createProcessor(nextCallback(iterator), options, function processorCallback(err) {
+      options = null;
+      processor = null;
+      nextTick(err ? callback.bind(null, err) : callback);
+    });
+    processor();
   } else {
     return new Promise(function (resolve, reject) {
       maximizeIterator(iterator, fn, options, function (err) {
