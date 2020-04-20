@@ -7,7 +7,7 @@ var DEFAULT_CONCURRENCY = 4096;
 var DEFAULT_LIMIT = Infinity;
 var MAXIMUM_BATCH = 10;
 
-module.exports = function maximizeIterator(iterator, fn, options, callback) {
+module.exports = function maximizeIterator(iterator, fn, options, callback, skipNextTick) {
   if (typeof fn !== 'function') throw new Error('Missing each function');
   if (typeof options === 'function') {
     callback = options;
@@ -37,14 +37,20 @@ module.exports = function maximizeIterator(iterator, fn, options, callback) {
     var processor = createProcessor(nextCallback(iterator), options, function processorCallback(err) {
       options = null;
       processor = null;
-      nextTick(err ? callback.bind(null, err) : callback);
+      skipNextTick ? callback(err) : nextTick(err ? callback.bind(null, err) : callback);
     });
     processor();
   } else {
     return new Promise(function (resolve, reject) {
-      maximizeIterator(iterator, fn, options, function (err) {
-        err ? reject(err) : resolve();
-      });
+      maximizeIterator(
+        iterator,
+        fn,
+        options,
+        function (err) {
+          err ? reject(err) : resolve();
+        },
+        true
+      );
     });
   }
 };
