@@ -17,3 +17,10 @@ maximize(iterator, (value) => { /* do something including false stop */ }, { con
   /* done */
 });
 ```
+
+**forEach Options**:
+
+- bool: callbacks - use an each function with a callback `function(entry, callback)` (default: false)
+- number: concurrency - parallelism of processing. (default: Infinity)
+- number: limit - maximum number to process. (default: Infinity)
+- number: batch - per batch count to limit expansion. (default: 10)
