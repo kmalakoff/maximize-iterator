@@ -18,7 +18,7 @@ module.exports = function maximizeIterator(iterator, fn, options, callback, skip
     options = options || {};
     options = {
       each: fn,
-      async: options.async,
+      callbacks: options.callbacks || options.async,
       concurrency: options.concurrency || DEFAULT_CONCURRENCY,
       limit: options.limit || DEFAULT_LIMIT,
       batch: options.batch || MAXIMUM_BATCH,
