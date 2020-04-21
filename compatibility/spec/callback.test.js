@@ -34,7 +34,7 @@ describe('callback interface', function () {
         assert.ok(callback);
         setTimeout(callback, 10);
       },
-      { async: true },
+      { callbacks: true },
       function (err) {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
@@ -55,7 +55,7 @@ describe('callback interface', function () {
           callback(null, false);
         }, 10);
       },
-      { async: true },
+      { callbacks: true },
       function (err) {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);

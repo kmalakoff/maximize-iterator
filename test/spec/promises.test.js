@@ -32,7 +32,7 @@ describe('promises interface', function () {
       });
   });
 
-  it('should get all (async)', function (done) {
+  it('should get all (promises)', function (done) {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     maximizeIterator(
@@ -50,7 +50,7 @@ describe('promises interface', function () {
     );
   });
 
-  it('should get all (async, stop)', function (done) {
+  it('should get all (promises, stop)', function (done) {
     var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     maximizeIterator(
