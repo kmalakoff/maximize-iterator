@@ -1,6 +1,6 @@
 {
   "name": "maximize-iterator",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Maximize the parallel calls of an iterator supporting asyncIterator interface",
   "main": "index.js",
   "engines": {
@@ -29,7 +29,6 @@
   "homepage": "https://github.com/kmalakoff/maximize-iterator",
   "dependencies": {
     "async-compat": "^1.4.0",
-    "next-tick": "^1.1.0",
     "iterator-next-callback": "^1.1.0"
   },
   "devDependencies": {
