@@ -1,12 +1,6 @@
 var assert = require('assert');
 var maximizeIterator = require('../..');
 
-function sleep(timeout) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, timeout);
-  });
-}
-
 function Iterator(values) {
   this.values = values;
 }
@@ -40,7 +34,7 @@ describe('promises interface', function () {
       function (value, callback) {
         assert.ok(value);
         assert.ok(!callback);
-        return sleep(10);
+        return Promise.resolve();
       },
       function (err) {
         assert.ok(!err);
@@ -58,9 +52,7 @@ describe('promises interface', function () {
       function (value, callback) {
         assert.ok(value);
         assert.ok(!callback);
-        return sleep(10).then(function () {
-          return false;
-        });
+        return Promise.resolve(false);
       },
       function (err) {
         assert.ok(!err);
