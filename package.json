@@ -2,20 +2,6 @@
   "name": "maximize-iterator",
   "version": "2.6.3",
   "description": "Maximize the parallel calls of an iterator supporting asyncIterator interface",
-  "main": "index.js",
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "scripts": {
-    "test": "mocha test/spec/**/*.test.js",
-    "compat": "nvs 14,12,10,8,6,4,0.12,0.10,0.8 mocha-compat test/spec/**/*.test.js",
-    "lint": " ",
-    "format": "prettier --write '**/*.js'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:kmalakoff/maximize-iterator.git"
-  },
   "keywords": [
     "maximize",
     "limit",
@@ -25,25 +11,38 @@
     "asyncIterator",
     "Symbol.asyncIterator"
   ],
-  "author": "Kevin Malakoff <kmalakoff@gmail.com> (https://github.com/kmalakoff)",
-  "license": "MIT",
   "homepage": "https://github.com/kmalakoff/maximize-iterator",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kmalakoff/maximize-iterator.git"
+  },
+  "license": "MIT",
+  "author": "Kevin Malakoff <kmalakoff@gmail.com> (https://github.com/kmalakoff)",
+  "main": "index.js",
+  "scripts": {
+    "compat": "nvs --engines mocha-compat test/spec/**/*.test.js",
+    "format": "prettier --write '**/*.js'",
+    "lint": " ",
+    "test": "mocha-compat test/spec/**/*.test.js"
+  },
   "dependencies": {
     "async-compat": "^1.4.5",
     "iterator-next-callback": "^1.1.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^7.1.2",
     "mocha-compat": "^3.5.5",
-    "nvs": "^0.2.0",
+    "nvs": "^0.3.0",
     "prettier": "^2.0.5"
+  },
+  "engines": {
+    "node": ">=0.8.0"
   }
 }
