@@ -26,7 +26,7 @@
     "prepublish": "dtd \"npm run lint\" \"depcheck --ignores='depcheck'\""
   },
   "dependencies": {
-    "async-compat": "^1.4.5",
+    "async-compat": "^1.4.6",
     "iterator-next-callback": "^1.1.2"
   },
   "devDependencies": {
