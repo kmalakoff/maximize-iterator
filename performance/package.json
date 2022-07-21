@@ -15,8 +15,11 @@
     "test": "npm run ops && npm run mem"
   },
   "dependencies": {
-    "benchmark-suite": "^0.1.6",
-    "maximize-iterator-2.5.1": "npm:maximize-iterator@2.5.1",
+    "benchmark-suite": "^0.1.7",
+    "maximize-iterator-2.5.1": "npm:maximize-iterator@2.6.5",
     "next-tick": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=8"
   }
 }
