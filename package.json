@@ -30,9 +30,9 @@
     "test:engines": "nvu engines npm test"
   },
   "dependencies": {
-    "async-compat": "^1.4.6",
+    "async-compat": "^1.4.7",
     "is-error": "^2.2.2",
-    "iterator-next-callback": "^1.1.2"
+    "iterator-next-callback": "^1.1.4"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^5.30.7",
