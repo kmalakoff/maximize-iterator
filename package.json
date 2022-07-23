@@ -23,6 +23,7 @@
     "lib"
   ],
   "scripts": {
+    "build": "",
     "format": "prettier --write .",
     "lint": " ",
     "prepublishOnly": "npm run lint && depcheck",
