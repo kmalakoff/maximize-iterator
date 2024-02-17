@@ -1,42 +1,38 @@
-var assert = require('assert');
-var maximizeIterator = require('../..');
+import assert from 'assert';
+import maximizeIterator from 'maximize-iterator';
+
+const HAS_ASYNC_AWAIT = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
 
 function Iterator(values) {
   this.values = values;
 }
 
-Iterator.prototype[Symbol.asyncIterator] = function () {
-  var self = this;
-  return { next: nextPromise };
-
-  function nextPromise() {
-    return new Promise(function (resolve) {
-      var value = self.values.length ? self.values.shift() : null;
-      return resolve({ value: value, done: value === null });
-    });
-  }
+Iterator.prototype.next = function (callback) {
+  callback(null, this.values.length ? this.values.shift() : null);
 };
 
-describe('asyncIterator', function () {
-  it('should get all (default options)', async function () {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+describe('async await', () => {
+  if (!HAS_ASYNC_AWAIT) return;
+
+  it('should get all (default options)', async () => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     try {
-      await maximizeIterator(iterator, function () {});
+      await maximizeIterator(iterator, () => {});
     } catch (err) {
       assert.ok(!err);
     }
     assert.equal(iterator.values.length, 0);
   });
 
-  it('should get all (concurrency 1)', async function () {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should get all (concurrency 1)', async () => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     try {
       await maximizeIterator(
         iterator,
-        function (value) {
+        (value) => {
           results.push(value);
         },
         {
@@ -50,14 +46,14 @@ describe('asyncIterator', function () {
     }
   });
 
-  it('should get all (concurrency 100)', async function () {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should get all (concurrency 100)', async () => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     try {
       await maximizeIterator(
         iterator,
-        function (value) {
+        (value) => {
           results.push(value);
         },
         {
@@ -71,14 +67,14 @@ describe('asyncIterator', function () {
     assert.deepEqual(results.sort(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort());
   });
 
-  it('should get with promises (concurrency 1)', async function () {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should get with promises (concurrency 1)', async () => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     try {
       await maximizeIterator(
         iterator,
-        async function (value) {
+        async (value) => {
           results.push(value);
           return true;
         },
@@ -93,14 +89,14 @@ describe('asyncIterator', function () {
     assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 
-  it('should get with promises and early exit (concurrency 1)', async function () {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should get with promises and early exit (concurrency 1)', async () => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     try {
       await maximizeIterator(
         iterator,
-        async function (value) {
+        async (value) => {
           if (value === 3) return false;
           results.push(value);
           return true;

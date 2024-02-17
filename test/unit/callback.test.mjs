@@ -1,5 +1,5 @@
-var assert = require('assert');
-var maximizeIterator = require('../..');
+import assert from 'assert';
+import maximizeIterator from 'maximize-iterator';
 
 function Iterator(values) {
   this.values = values;
@@ -9,14 +9,14 @@ Iterator.prototype.next = function (callback) {
   callback(null, this.values.length ? this.values.shift() : null);
 };
 
-describe('callback interface', function () {
-  it('should get all (default options)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+describe('callback interface', () => {
+  it('should get all (default options)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     maximizeIterator(
       iterator,
-      function () {},
-      function (err) {
+      () => {},
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
         done();
@@ -24,18 +24,18 @@ describe('callback interface', function () {
     );
   });
 
-  it('should get all (async)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should get all (async)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     maximizeIterator(
       iterator,
-      function (value, callback) {
+      (value, callback) => {
         assert.ok(value);
         assert.ok(callback);
         setTimeout(callback, 10);
       },
       { callbacks: true },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
         done();
@@ -43,20 +43,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('should get all (async, stop)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should get all (async, stop)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     maximizeIterator(
       iterator,
-      function (value, callback) {
+      (value, callback) => {
         assert.ok(value);
         assert.ok(callback);
-        setTimeout(function () {
+        setTimeout(() => {
           callback(null, false);
         }, 10);
       },
       { callbacks: true },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
         done();
@@ -64,19 +64,19 @@ describe('callback interface', function () {
     );
   });
 
-  it('should get all (concurrency 1)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should get all (concurrency 1)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         concurrency: 1,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -85,19 +85,19 @@ describe('callback interface', function () {
     );
   });
 
-  it('should get all (concurrency 100)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should get all (concurrency 100)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         concurrency: 100,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -106,20 +106,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('should stop after 1 (concurrency 1)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should stop after 1 (concurrency 1)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
         return false;
       },
       {
         concurrency: 1,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
@@ -128,20 +128,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('should stop after 1 (concurrency 1, error)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('should stop after 1 (concurrency 1, error)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
         return new Error('Stop');
       },
       {
         concurrency: 1,
       },
-      function (err) {
+      (err) => {
         assert.ok(err);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
@@ -150,19 +150,19 @@ describe('callback interface', function () {
     );
   });
 
-  it('limit 1 (concurrency default)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 1 (concurrency default)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         limit: 1,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
@@ -171,20 +171,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('limit 1 (concurrency 1)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 1 (concurrency 1)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         concurrency: 1,
         limit: 1,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
@@ -193,20 +193,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('limit 1 (concurrency 10)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 1 (concurrency 10)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         concurrency: 10,
         limit: 1,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
@@ -214,19 +214,19 @@ describe('callback interface', function () {
       }
     );
   });
-  it('limit 5 (concurrency default)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 5 (concurrency default)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         limit: 5,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 5);
         assert.deepEqual(results, [1, 2, 3, 4, 5]);
@@ -235,20 +235,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('limit 5 (concurrency 1)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 5 (concurrency 1)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         concurrency: 1,
         limit: 5,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 5);
         assert.deepEqual(results, [1, 2, 3, 4, 5]);
@@ -257,20 +257,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('limit 5 (concurrency 10)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 5 (concurrency 10)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         concurrency: 10,
         limit: 5,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 5);
         assert.deepEqual(results, [1, 2, 3, 4, 5]);
@@ -279,19 +279,19 @@ describe('callback interface', function () {
     );
   });
 
-  it('limit 20 (concurrency default)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 20 (concurrency default)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         limit: 20,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -300,20 +300,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('limit 20 (concurrency 1)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 20 (concurrency 1)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         concurrency: 1,
         limit: 20,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -322,20 +322,20 @@ describe('callback interface', function () {
     );
   });
 
-  it('limit 20 (concurrency 10)', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  it('limit 20 (concurrency 10)', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var results = [];
+    const results = [];
     maximizeIterator(
       iterator,
-      function (value) {
+      (value) => {
         results.push(value);
       },
       {
         concurrency: 10,
         limit: 20,
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
