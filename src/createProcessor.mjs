@@ -1,5 +1,6 @@
-var compat = require('async-compat');
-var isError = require('is-error');
+import compat from 'async-compat';
+
+const isError = (e) => e && e.stack && e.message;
 
 function processDone(err, options, callback) {
   // mark this iteration done
@@ -27,30 +28,28 @@ function processResult(err, keep, options, callback) {
   return true;
 }
 
-module.exports = function createProcessor(next, options, callback) {
-  var isProcessing = false;
+export default function createProcessor(next, options, callback) {
+  let isProcessing = false;
   return function processor(doneOrErr) {
     if (doneOrErr && processDone(isError(doneOrErr) ? doneOrErr : null, options, callback)) return;
     if (isProcessing) return;
     isProcessing = true;
 
-    var counter = 0;
+    let counter = 0;
     while (options.counter < options.concurrency) {
       if (options.done || options.stop(counter++)) break;
       if (options.total >= options.limit) return processDone(null, options, callback);
       options.total++;
       options.counter++;
 
-      next(function (err, value) {
+      next((err, value) => {
         if (err || value === null) {
           return !processResult(err, false, options, callback) && !isProcessing ? processor() : undefined;
         }
-        compat.asyncFunction(options.each, options.callbacks, value, function (err, keep) {
-          return !processResult(err, keep, options, callback) && !isProcessing ? processor() : undefined;
-        });
+        compat.asyncFunction(options.each, options.callbacks, value, (err, keep) => (!processResult(err, keep, options, callback) && !isProcessing ? processor() : undefined));
       });
     }
 
     isProcessing = false;
   };
-};
+}
