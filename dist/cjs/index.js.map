@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.mjs"],"sourcesContent":["export { default as createProcessor } from './createProcessor.mjs';\n\nimport maximizeIterator from './maximizeIterator.mjs';\nexport default maximizeIterator;\n"],"names":["createProcessor","maximizeIterator"],"mappings":";;;;;;;;;;;IAAoBA,eAAe;eAAfA,wBAAe;;IAGnC,OAAgC;eAAhC;;;sEAH2C;uEAEd;;;;;;IAC7B,WAAeC,yBAAgB"}

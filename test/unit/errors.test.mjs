@@ -1,5 +1,5 @@
-var assert = require('assert');
-var maximizeIterator = require('../..');
+import assert from 'assert';
+import maximizeIterator from 'maximize-iterator';
 
 function Iterator(values) {
   this.values = values;
@@ -10,20 +10,20 @@ Iterator.prototype.next = function (callback) {
   this.values.length > 0 ? callback(new Error('Failed')) : callback(null, null);
 };
 
-describe('errors', function () {
-  it('should filter errors', function (done) {
-    var iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+describe('errors', () => {
+  it('should filter errors', (done) => {
+    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    var errors = [];
+    const errors = [];
     maximizeIterator(
       iterator,
-      function () {},
+      () => {},
       {
-        error: function (err) {
+        error: (err) => {
           errors.push(err);
         },
       },
-      function (err) {
+      (err) => {
         assert.ok(!err);
         assert.equal(errors.length, 9);
         done();

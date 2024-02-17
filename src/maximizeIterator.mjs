@@ -1,12 +1,12 @@
-var nextCallback = require('iterator-next-callback');
+import createProcessor from './createProcessor';
 
-var createProcessor = require('./createProcessor');
+import nextCallback from 'iterator-next-callback';
 
-var DEFAULT_CONCURRENCY = 4096;
-var DEFAULT_LIMIT = Infinity;
-var MAXIMUM_BATCH = 10;
+const DEFAULT_CONCURRENCY = 4096;
+const DEFAULT_LIMIT = Infinity;
+const MAXIMUM_BATCH = 10;
 
-module.exports = function maximizeIterator(iterator, fn, options, callback) {
+export default function maximizeIterator(iterator, fn, options, callback) {
   if (typeof fn !== 'function') throw new Error('Missing each function');
   if (typeof options === 'function') {
     callback = options;
@@ -23,27 +23,25 @@ module.exports = function maximizeIterator(iterator, fn, options, callback) {
       batch: options.batch || MAXIMUM_BATCH,
       error:
         options.error ||
-        function () {
+        (() => {
           return true; // default is exit on error
-        },
+        }),
       total: 0,
       counter: 0,
-      stop: function (counter) {
-        return counter > options.batch;
-      },
+      stop: (counter) => counter > options.batch,
     };
 
-    var processor = createProcessor(nextCallback(iterator), options, function processorCallback(err) {
+    let processor = createProcessor(nextCallback(iterator), options, function processorCallback(err) {
       options = null;
       processor = null;
       return callback(err);
     });
     processor();
   } else {
-    return new Promise(function (resolve, reject) {
-      maximizeIterator(iterator, fn, options, function (err) {
+    return new Promise((resolve, reject) => {
+      maximizeIterator(iterator, fn, options, (err) => {
         err ? reject(err) : resolve();
       });
     });
   }
-};
+}
