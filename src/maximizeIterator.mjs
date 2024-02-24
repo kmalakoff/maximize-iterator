@@ -1,6 +1,5 @@
-import createProcessor from './createProcessor';
-
 import nextCallback from 'iterator-next-callback';
+import createProcessor from './createProcessor.mjs';
 
 const DEFAULT_CONCURRENCY = 4096;
 const DEFAULT_LIMIT = Infinity;
