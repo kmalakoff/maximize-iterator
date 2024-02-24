@@ -50,7 +50,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.20",
     "depcheck": "^1.4.7",
-    "ts-dev-stack": "^0.15.6"
+    "ts-dev-stack": "^0.15.8"
   },
   "engines": {
     "node": ">=0.8"
