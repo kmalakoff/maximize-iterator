@@ -1,13 +1,13 @@
 import assert from 'assert';
 import maximizeIterator from 'maximize-iterator';
 
-const HAS_ASYNC_ITERATOR = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
+describe('asyncIterator', () => {
+  if (typeof Symbol === 'undefined' || !Symbol.asyncIterator) return;
 
-function Iterator(values) {
-  this.values = values;
-}
+  function Iterator(values) {
+    this.values = values;
+  }
 
-if (HAS_ASYNC_ITERATOR) {
   Iterator.prototype[Symbol.asyncIterator] = function () {
     const self = this;
     return { next: nextPromise };
@@ -19,10 +19,6 @@ if (HAS_ASYNC_ITERATOR) {
       });
     }
   };
-}
-
-describe('asyncIterator', () => {
-  if (!HAS_ASYNC_ITERATOR) return;
 
   it('should get all (default options)', async () => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);

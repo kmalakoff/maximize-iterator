@@ -8,8 +8,8 @@ Object.defineProperty(exports, "default", {
         return maximizeIterator;
     }
 });
-var _createProcessor = /*#__PURE__*/ _interop_require_default(require("./createProcessor"));
 var _iteratornextcallback = /*#__PURE__*/ _interop_require_default(require("iterator-next-callback"));
+var _createProcessor = /*#__PURE__*/ _interop_require_default(require("./createProcessor.js"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -55,4 +55,4 @@ function maximizeIterator(iterator, fn, options, callback) {
         });
     }
 }
-/* CJS INTEROP */ if (exports.__esModule && exports.default) { module.exports = exports.default; for (var key in exports) module.exports[key] = exports[key]; }
+/* CJS INTEROP */ if (exports.__esModule && exports.default) { Object.defineProperty(exports.default, '__esModule', { value: true }); for (var key in exports) exports.default[key] = exports[key]; module.exports = exports.default; }
