@@ -1,8 +1,6 @@
 import assert from 'assert';
 import maximizeIterator from 'maximize-iterator';
 
-const HAS_ASYNC_AWAIT = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
-
 function Iterator(values) {
   this.values = values;
 }
@@ -12,7 +10,7 @@ Iterator.prototype.next = function (callback) {
 };
 
 describe('async await', () => {
-  if (!HAS_ASYNC_AWAIT) return;
+  if (typeof Symbol === 'undefined' || !Symbol.asyncIterator) return;
 
   it('should get all (default options)', async () => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
