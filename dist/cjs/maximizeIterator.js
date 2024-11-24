@@ -19,12 +19,12 @@ var DEFAULT_CONCURRENCY = 4096;
 var DEFAULT_LIMIT = Infinity;
 var MAXIMUM_BATCH = 10;
 function maximizeIterator(iterator, fn, options, callback) {
-    if (typeof fn !== "function") throw new Error("Missing each function");
-    if (typeof options === "function") {
+    if (typeof fn !== 'function') throw new Error('Missing each function');
+    if (typeof options === 'function') {
         callback = options;
         options = {};
     }
-    if (typeof callback === "function") {
+    if (typeof callback === 'function') {
         options = options || {};
         options = {
             each: fn,
