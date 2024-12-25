@@ -26,7 +26,7 @@ describe('asyncIterator', () => {
     try {
       await maximizeIterator(iterator, () => {});
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
     assert.equal(iterator.values.length, 0);
   });
@@ -48,7 +48,7 @@ describe('asyncIterator', () => {
       assert.equal(iterator.values.length, 0);
       assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
   });
 
@@ -67,7 +67,7 @@ describe('asyncIterator', () => {
         }
       );
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
     assert.equal(iterator.values.length, 0);
     assert.deepEqual(results.sort(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort());
@@ -89,7 +89,7 @@ describe('asyncIterator', () => {
         }
       );
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
     assert.equal(iterator.values.length, 0);
     assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -112,7 +112,7 @@ describe('asyncIterator', () => {
         }
       );
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
     assert.equal(iterator.values.length, 7);
     assert.deepEqual(results, [1, 2]);
