@@ -24,7 +24,7 @@ describe('errors', () => {
         },
       },
       (err) => {
-        assert.ok(!err);
+        assert.ok(!err, err ? err.message : '');
         assert.equal(errors.length, 9);
         done();
       }

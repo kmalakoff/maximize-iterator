@@ -11,7 +11,7 @@ describe('exports .ts', () => {
       iterator,
       () => {},
       (err) => {
-        assert.ok(!err);
+        assert.ok(!err, err ? err.message : '');
         assert.equal(iterator.values.length, 0);
         done();
       }

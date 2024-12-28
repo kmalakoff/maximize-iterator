@@ -1,8 +1,22 @@
 import assert from 'assert';
 import maximizeIterator from 'maximize-iterator';
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
+import Promise from 'pinkie-promise';
 
 describe('asyncIterator', () => {
   if (typeof Symbol === 'undefined' || !Symbol.asyncIterator) return;
+  (() => {
+    // patch and restore promise
+    const root = typeof global !== 'undefined' ? global : window;
+    let rootPromise;
+    before(() => {
+      rootPromise = root.Promise;
+      root.Promise = Promise;
+    });
+    after(() => {
+      root.Promise = rootPromise;
+    });
+  })();
 
   function Iterator(values) {
     this.values = values;
@@ -26,7 +40,7 @@ describe('asyncIterator', () => {
     try {
       await maximizeIterator(iterator, () => {});
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
     assert.equal(iterator.values.length, 0);
   });
@@ -48,7 +62,7 @@ describe('asyncIterator', () => {
       assert.equal(iterator.values.length, 0);
       assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
   });
 
@@ -67,7 +81,7 @@ describe('asyncIterator', () => {
         }
       );
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
     assert.equal(iterator.values.length, 0);
     assert.deepEqual(results.sort(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort());
@@ -89,7 +103,7 @@ describe('asyncIterator', () => {
         }
       );
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
     assert.equal(iterator.values.length, 0);
     assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -112,7 +126,7 @@ describe('asyncIterator', () => {
         }
       );
     } catch (err) {
-      assert.ok(!err);
+      assert.ok(!err, err ? err.message : '');
     }
     assert.equal(iterator.values.length, 7);
     assert.deepEqual(results, [1, 2]);
