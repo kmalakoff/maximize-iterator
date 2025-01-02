@@ -1,4 +1,6 @@
 import assert from 'assert';
+
+// @ts-ignore
 import maximizeIterator from 'maximize-iterator';
 
 function Iterator(values) {
