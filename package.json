@@ -1,6 +1,6 @@
 {
   "name": "maximize-iterator",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "Maximize the parallel calls of an iterator supporting asyncIterator interface",
   "keywords": [
     "maximize",
