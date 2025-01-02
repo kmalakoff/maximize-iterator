@@ -1,38 +1,32 @@
 import assert from 'assert';
-import maximizeIterator from 'maximize-iterator';
-// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import Promise from 'pinkie-promise';
+import Pinkie from 'pinkie-promise';
 
-describe('asyncIterator', () => {
+// @ts-ignore
+import maximizeIterator from 'maximize-iterator';
+
+function Iterator(values) {
+  this.values = values;
+}
+
+Iterator.prototype.next = function (callback) {
+  callback(null, this.values.length ? this.values.shift() : null);
+};
+
+describe('async await', () => {
   if (typeof Symbol === 'undefined' || !Symbol.asyncIterator) return;
   (() => {
     // patch and restore promise
-    const root = typeof global !== 'undefined' ? global : window;
-    let rootPromise;
+    // @ts-ignore
+    let rootPromise: Promise;
     before(() => {
-      rootPromise = root.Promise;
-      root.Promise = Promise;
+      rootPromise = global.Promise;
+      // @ts-ignore
+      global.Promise = Pinkie;
     });
     after(() => {
-      root.Promise = rootPromise;
+      global.Promise = rootPromise;
     });
   })();
-
-  function Iterator(values) {
-    this.values = values;
-  }
-
-  Iterator.prototype[Symbol.asyncIterator] = function () {
-    const self = this;
-    return { next: nextPromise };
-
-    function nextPromise() {
-      return new Promise((resolve) => {
-        const value = self.values.length ? self.values.shift() : null;
-        return resolve({ value: value, done: value === null });
-      });
-    }
-  };
 
   it('should get all (default options)', async () => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
