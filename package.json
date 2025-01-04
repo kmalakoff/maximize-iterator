@@ -43,7 +43,7 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "async-compat": "^1.5.7",
+    "async-compat": "^1.5.8",
     "iterator-next-callback": "^1.3.5"
   },
   "devDependencies": {
