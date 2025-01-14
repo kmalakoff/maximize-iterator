@@ -1,1 +1,1 @@
-ignores: ["maximize-iterator", "@types/*", "@biomejs/*"]
+ignores: ["@types/*", "maximize-iterator", "@biomejs/*"]
