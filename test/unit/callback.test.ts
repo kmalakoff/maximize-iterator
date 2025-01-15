@@ -19,7 +19,7 @@ describe('callback interface', () => {
       iterator,
       () => {},
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         done();
       }
@@ -38,7 +38,7 @@ describe('callback interface', () => {
       },
       { callbacks: true },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         done();
       }
@@ -59,7 +59,7 @@ describe('callback interface', () => {
       },
       { callbacks: true },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         done();
       }
@@ -79,7 +79,7 @@ describe('callback interface', () => {
         concurrency: 1,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         done();
@@ -100,7 +100,7 @@ describe('callback interface', () => {
         concurrency: 100,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         done();
@@ -122,7 +122,7 @@ describe('callback interface', () => {
         concurrency: 1,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
         done();
@@ -165,7 +165,7 @@ describe('callback interface', () => {
         limit: 1,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
         done();
@@ -187,7 +187,7 @@ describe('callback interface', () => {
         limit: 1,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
         done();
@@ -209,7 +209,7 @@ describe('callback interface', () => {
         limit: 1,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 9);
         assert.deepEqual(results, [1]);
         done();
@@ -229,7 +229,7 @@ describe('callback interface', () => {
         limit: 5,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 5);
         assert.deepEqual(results, [1, 2, 3, 4, 5]);
         done();
@@ -251,7 +251,7 @@ describe('callback interface', () => {
         limit: 5,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 5);
         assert.deepEqual(results, [1, 2, 3, 4, 5]);
         done();
@@ -273,7 +273,7 @@ describe('callback interface', () => {
         limit: 5,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 5);
         assert.deepEqual(results, [1, 2, 3, 4, 5]);
         done();
@@ -294,7 +294,7 @@ describe('callback interface', () => {
         limit: 20,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         done();
@@ -316,7 +316,7 @@ describe('callback interface', () => {
         limit: 20,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         done();
@@ -338,7 +338,7 @@ describe('callback interface', () => {
         limit: 20,
       },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         assert.deepEqual(results, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         done();

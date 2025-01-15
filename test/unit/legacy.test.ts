@@ -24,7 +24,7 @@ describe('legacy', () => {
       },
       { async: true },
       (err) => {
-        if (err) return done(err);
+        if (err) return done(err.message);
         assert.equal(iterator.values.length, 0);
         done();
       }
