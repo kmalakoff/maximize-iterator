@@ -40,7 +40,7 @@ describe('asyncIterator', () => {
   it('should get all (default options)', async () => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    await maximizeIterator(iterator, () => {});
+    await maximizeIterator(iterator, (_) => {});
     assert.equal(iterator.values.length, 0);
   });
 

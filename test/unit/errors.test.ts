@@ -19,7 +19,7 @@ describe('errors', () => {
     const errors = [];
     maximizeIterator(
       iterator,
-      () => {},
+      (_) => {},
       {
         error: (err) => {
           errors.push(err);
