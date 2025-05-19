@@ -1,6 +1,6 @@
-import worker from './worker';
+import worker from './worker.js';
 
-import type { EachFunction, MaximizeCallback, MaximizeOptions } from './types';
+import type { EachFunction, MaximizeCallback, MaximizeOptions } from './types.js';
 
 export default function maximizeIterator<T>(iterator: AsyncIterableIterator<T>, each: EachFunction<T>, options?: MaximizeOptions | MaximizeCallback, callback?: MaximizeCallback): undefined | Promise<undefined> {
   if (typeof each !== 'function') throw new Error('Missing each function');
