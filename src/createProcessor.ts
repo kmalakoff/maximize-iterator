@@ -1,4 +1,6 @@
 import compat from 'async-compat';
+import type { CallbackIteratorNext } from 'iterator-next-callback';
+import type { MaximizeOptionsPrivate } from './types.js';
 
 const isError = (e) => e && e.stack && e.message;
 
@@ -28,7 +30,7 @@ function processResult(err, keep, options, callback) {
   return true;
 }
 
-export default function createProcessor(next, options, callback) {
+export default function createProcessor<T>(next: CallbackIteratorNext<T>, options: MaximizeOptionsPrivate<T>, callback: (error?: Error) => undefined) {
   let isProcessing = false;
   return function processor(doneOrErr?: boolean | Error) {
     if (doneOrErr && processDone(isError(doneOrErr) ? doneOrErr : null, options, callback)) return;
@@ -42,7 +44,7 @@ export default function createProcessor(next, options, callback) {
       options.total++;
       options.counter++;
 
-      next((err, value) => {
+      next((err?: Error, value?: T | null) => {
         if (err || value === null) {
           return !processResult(err, false, options, callback) && !isProcessing ? processor() : undefined;
         }
