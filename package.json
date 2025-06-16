@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "async-compat": "^1.6.13",
-    "iterator-next-callback": "^1.3.16"
+    "iterator-next-callback": "^2.0.0"
   },
   "devDependencies": {
     "@types/mocha": "*",

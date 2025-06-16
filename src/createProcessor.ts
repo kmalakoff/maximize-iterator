@@ -30,7 +30,7 @@ function processResult(err, keep, options, callback) {
   return true;
 }
 
-export default function createProcessor<T>(next: Next<T>, options: ProcessorOptions<T>, callback: EachDoneCallback): Processor {
+export default function createProcessor<T, TReturn = unknown>(next: Next<T>, options: ProcessorOptions<T>, callback: EachDoneCallback): Processor {
   let isProcessing = false;
   return function processor(doneOrError?: Error | boolean): undefined {
     const error = doneOrError as Error;
@@ -48,11 +48,11 @@ export default function createProcessor<T>(next: Next<T>, options: ProcessorOpti
       options.total++;
       options.counter++;
 
-      next((err?: Error, value?: unknown) => {
-        if (err || value === null) {
+      next((err?: Error, result?: IteratorResult<T, TReturn>) => {
+        if (err || result.done) {
           return !processResult(err, false, options, callback) && !isProcessing ? processor() : undefined;
         }
-        compat.asyncFunction(options.each, options.callbacks, value, (err, keep) => (!processResult(err, keep, options, callback) && !isProcessing ? processor() : undefined));
+        compat.asyncFunction(options.each, options.callbacks, result.value, (err, keep) => (!processResult(err, keep, options, callback) && !isProcessing ? processor() : undefined));
       });
     }
 

@@ -4,13 +4,18 @@ import Pinkie from 'pinkie-promise';
 // @ts-ignore
 import maximizeIterator from 'maximize-iterator';
 
-function Iterator(values) {
-  this.values = values;
-}
+class Iterator<T> implements AsyncIterator<T> {
+  values: T[];
 
-Iterator.prototype.next = function (callback) {
-  callback(null, this.values.length ? this.values.shift() : null);
-};
+  constructor(values: T[]) {
+    this.values = values;
+  }
+  next() {
+    return new Pinkie((resolve) => {
+      return resolve(this.values.length ? { done: false, value: this.values.shift() } : { done: true, value: null });
+    });
+  }
+}
 
 describe('promises interface', () => {
   (() => {
@@ -28,9 +33,9 @@ describe('promises interface', () => {
   })();
 
   it('should get all (default options)', (done) => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    maximizeIterator(iterator, (_) => {})
+    maximizeIterator<number>(iterator, async (): Promise<undefined> => {})
       .then(() => {
         assert.equal(iterator.values.length, 0);
         done();
@@ -45,14 +50,14 @@ describe('promises interface', () => {
   });
 
   it('should get all (promises)', (done) => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    maximizeIterator(
+    maximizeIterator<number>(
       iterator,
-      (value, callback) => {
+      (value, callback?): Promise<undefined> => {
         assert.ok(value);
         assert.ok(!callback);
-        return Promise.resolve();
+        return Promise.resolve(undefined);
       },
       (err) => {
         if (err) {
@@ -66,11 +71,11 @@ describe('promises interface', () => {
   });
 
   it('should get all (promises, stop)', (done) => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    maximizeIterator(
+    maximizeIterator<number>(
       iterator,
-      (value, callback) => {
+      (value: number, callback?): Promise<boolean> => {
         assert.ok(value);
         assert.ok(!callback);
         return Promise.resolve(false);
@@ -87,12 +92,12 @@ describe('promises interface', () => {
   });
 
   it('should get all (concurrency 1)', (done) => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     const results = [];
-    maximizeIterator(
+    maximizeIterator<number>(
       iterator,
-      (value) => {
+      async (value: number): Promise<undefined> => {
         results.push(value);
       },
       {
@@ -114,12 +119,12 @@ describe('promises interface', () => {
   });
 
   it('should get all (concurrency 100)', (done) => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     const results = [];
-    maximizeIterator(
+    maximizeIterator<number>(
       iterator,
-      (value) => {
+      async (value: number): Promise<undefined> => {
         results.push(value);
       },
       {
@@ -141,12 +146,12 @@ describe('promises interface', () => {
   });
 
   it('should get with promises (concurrency 1)', (done) => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     const results = [];
-    maximizeIterator(
+    maximizeIterator<number>(
       iterator,
-      (value) => {
+      (value: number): boolean => {
         results.push(value);
         return true;
       },
@@ -174,7 +179,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value: number): boolean => {
         if (value === 3) return false;
         results.push(value);
         return true;
@@ -198,12 +203,12 @@ describe('promises interface', () => {
   });
 
   it('should stop after 1 false (concurrency 1)', (done) => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     const results = [];
-    maximizeIterator(
+    maximizeIterator<number>(
       iterator,
-      (value) => {
+      (value: number): boolean => {
         results.push(value);
         return false;
       },
@@ -231,7 +236,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
         throw Error('Stop');
       },
@@ -257,7 +262,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -283,7 +288,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -310,7 +315,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -337,7 +342,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -363,7 +368,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -390,7 +395,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -417,7 +422,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -443,7 +448,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -470,7 +475,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
