@@ -1,10 +1,10 @@
 import compat from 'async-compat';
-import type { CallbackIteratorNext } from 'iterator-next-callback';
-import type { MaximizeOptionsPrivate } from './types.js';
 
-const isError = (e) => e && e.stack && e.message;
+import type { EachDoneCallback, Next, Processor, ProcessorOptions } from './types.js';
 
-function processDone(err, options, callback) {
+const isError = (err?: Error): boolean => err && err.stack !== undefined && err.message !== undefined;
+
+function processDone<T>(err: Error, options: ProcessorOptions<T>, callback: EachDoneCallback) {
   // mark this iteration done
   options.err = options.err || err;
   options.done = true;
@@ -30,21 +30,25 @@ function processResult(err, keep, options, callback) {
   return true;
 }
 
-export default function createProcessor<T>(next: CallbackIteratorNext<T>, options: MaximizeOptionsPrivate<T>, callback: (error?: Error) => undefined) {
+export default function createProcessor<T>(next: Next<T>, options: ProcessorOptions<T>, callback: EachDoneCallback): Processor {
   let isProcessing = false;
-  return function processor(doneOrErr?: boolean | Error) {
-    if (doneOrErr && processDone(isError(doneOrErr) ? doneOrErr : null, options, callback)) return;
+  return function processor(doneOrError?: Error | boolean): undefined {
+    const error = doneOrError as Error;
+    if (doneOrError && processDone(isError(error) ? error : null, options, callback)) return;
     if (isProcessing) return;
     isProcessing = true;
 
     let counter = 0;
     while (options.counter < options.concurrency) {
       if (options.done || options.stop(counter++)) break;
-      if (options.total >= options.limit) return processDone(null, options, callback);
+      if (options.total >= options.limit) {
+        processDone(null, options, callback);
+        return;
+      }
       options.total++;
       options.counter++;
 
-      next((err?: Error, value?: T | null) => {
+      next((err?: Error, value?: unknown) => {
         if (err || value === null) {
           return !processResult(err, false, options, callback) && !isProcessing ? processor() : undefined;
         }
