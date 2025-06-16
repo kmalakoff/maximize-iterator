@@ -1,22 +1,29 @@
 export type { CallbackIterator } from 'iterator-next-callback';
-export type MaximizeCallback = (err?: Error) => void;
-export interface MaximizeOptions {
-  async?: boolean;
+export type Callback = (err?: Error) => void;
+
+export interface ForEachOptions {
+  error?: (err: NodeJS.ErrnoException) => boolean;
+  callbacks?: boolean;
   concurrency?: number;
   limit?: number;
-  callbacks?: boolean;
   batch?: number;
-  error?: (err: Error) => void;
 }
 
-export interface MaximizeOptionsPrivate<T> extends MaximizeOptions {
+export type EachDoneCallback = (error?: Error, value?: boolean) => undefined;
+export type EachCallback<T> = (value: T, callback: EachDoneCallback) => undefined;
+export type EachPromise<T> = (value: T) => Promise<boolean | undefined>;
+export type EachFunction<T> = EachCallback<T> | EachPromise<T>;
+
+export type NextCallback<T> = (error?: Error, value?: T | null) => undefined;
+export type Next<T> = (callback: ProcessCallback<T>) => undefined;
+
+export type ProcessCallback<T> = (error?: Error, value?: T | null) => undefined;
+export type Processor = (doneOrError?: Error | boolean) => undefined;
+export interface ProcessorOptions<T> extends ForEachOptions {
   each: EachFunction<T>;
-  stop: (counter: number) => boolean;
+  stop: (count?: number) => boolean;
   total: number;
   counter: number;
-  done: boolean;
+  done?: boolean;
+  err?: Error;
 }
-
-export type EachFunctionCallback<T> = (value: T, callback?: (err?: Error, stop?: boolean) => void) => void;
-export type EachFunctionPromise<T> = (value: T) => Promise<T>;
-export type EachFunction<T> = EachFunctionCallback<T> | EachFunctionPromise<T>;
