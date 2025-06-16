@@ -1,11 +1,11 @@
 import worker from './worker.js';
 
-import type { EachFunction, MaximizeCallback, MaximizeOptions } from './types.js';
+import type { Callback, EachFunction, ForEachOptions } from './types.js';
 
-export default function maximizeIterator<T>(iterator: AsyncIterableIterator<T>, each: EachFunction<T>, options?: MaximizeOptions | MaximizeCallback, callback?: MaximizeCallback): undefined | Promise<undefined> {
+export default function maximizeIterator<T>(iterator: AsyncIterableIterator<T>, each: EachFunction<T>, options?: ForEachOptions | Callback, callback?: Callback): undefined | Promise<undefined> {
   if (typeof each !== 'function') throw new Error('Missing each function');
   if (typeof options === 'function') {
-    callback = options as MaximizeCallback;
+    callback = options as Callback;
     options = {};
   }
   options = options || {};
