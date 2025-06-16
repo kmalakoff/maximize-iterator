@@ -7,7 +7,7 @@ const DEFAULT_CONCURRENCY = 4096;
 const DEFAULT_LIMIT = Infinity;
 const MAXIMUM_BATCH = 10;
 
-export default function worker<T>(iterator: AsyncIterableIterator<T>, each: EachFunction<T>, options_: ForEachOptions, callback: Callback) {
+export default function worker<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterator<T, TReturn, TNext> | AsyncIterable<T, TReturn, TNext> | AsyncIterableIterator<T, TReturn, TNext>, each: EachFunction<T>, options_: ForEachOptions, callback: Callback) {
   let options: ProcessorOptions<T> = {
     callbacks: options_.callbacks,
     concurrency: options_.concurrency || DEFAULT_CONCURRENCY,
@@ -22,7 +22,7 @@ export default function worker<T>(iterator: AsyncIterableIterator<T>, each: Each
     done: false,
   };
 
-  let processor = createProcessor(nextCallback(iterator), options, (err?: Error) => {
+  let processor = createProcessor(nextCallback<T, TReturn, TNext>(iterator), options, (err?: Error) => {
     options = null;
     processor = null;
     callback(err);
