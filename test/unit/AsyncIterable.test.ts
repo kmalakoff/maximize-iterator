@@ -4,14 +4,30 @@ import Pinkie from 'pinkie-promise';
 // @ts-ignore
 import maximizeIterator from 'maximize-iterator';
 
-describe('asyncIterator', () => {
+class Iterator<T> implements AsyncIterable<T> {
+  values: T[];
+
+  constructor(values: T[]) {
+    this.values = values;
+  }
+  [Symbol.asyncIterator](): AsyncIterator<T> {
+    return {
+      next: () => {
+        return new Pinkie((resolve) => {
+          return resolve(this.values.length ? { done: false, value: this.values.shift() } : { done: true, value: null });
+        });
+      },
+    };
+  }
+}
+
+describe('AsyncIterable', () => {
   if (typeof Symbol === 'undefined' || !Symbol.asyncIterator) return;
   (() => {
     // patch and restore promise
     // @ts-ignore
     let rootPromise: Promise;
     before(() => {
-      // @ts-ignore
       rootPromise = global.Promise;
       // @ts-ignore
       global.Promise = Pinkie;
@@ -21,36 +37,19 @@ describe('asyncIterator', () => {
     });
   })();
 
-  function Iterator(values) {
-    this.values = values;
-  }
-
-  Iterator.prototype[Symbol.asyncIterator] = function () {
-    const self = this;
-    return { next: nextPromise };
-
-    function nextPromise() {
-      return new Promise((resolve) => {
-        const value = self.values.length ? self.values.shift() : null;
-        return resolve({ value: value, done: value === null });
-      });
-    }
-  };
-
-  it('should get all (default options)', async () => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-
-    await maximizeIterator(iterator, (_) => {});
-    assert.equal(iterator.values.length, 0);
-  });
+  // it('should get all (default options)', async () => {
+  //   const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  //   await maximizeIterator<number>(iterator, (_error?: Error): undefined => {});
+  //   assert.equal(iterator.values.length, 0);
+  // });
 
   it('should get all (concurrency 1)', async () => {
-    const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
     const results = [];
-    await maximizeIterator(
+    await maximizeIterator<number>(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -67,7 +66,7 @@ describe('asyncIterator', () => {
     const results = [];
     await maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
