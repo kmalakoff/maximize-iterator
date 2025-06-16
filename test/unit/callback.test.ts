@@ -1,15 +1,21 @@
 import assert from 'assert';
+import Pinkie from 'pinkie-promise';
 
 // @ts-ignore
 import maximizeIterator from 'maximize-iterator';
 
-function Iterator(values) {
-  this.values = values;
-}
+class Iterator<T> implements AsyncIterator<T> {
+  values: T[];
 
-Iterator.prototype.next = function (callback) {
-  callback(null, this.values.length ? this.values.shift() : null);
-};
+  constructor(values: T[]) {
+    this.values = values;
+  }
+  next() {
+    return new Pinkie((resolve) => {
+      return resolve(this.values.length ? { done: false, value: this.values.shift() } : { done: true, value: null });
+    });
+  }
+}
 
 describe('callback interface', () => {
   it('should get all (default options)', (done) => {
@@ -17,7 +23,7 @@ describe('callback interface', () => {
 
     maximizeIterator<number>(
       iterator,
-      (_) => {},
+      (_value: number): undefined => {},
       (err) => {
         if (err) {
           done(err.message);
@@ -81,7 +87,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -105,7 +111,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -176,7 +182,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -200,7 +206,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -225,7 +231,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -249,7 +255,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -273,7 +279,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -298,7 +304,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -323,7 +329,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -347,7 +353,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
@@ -372,7 +378,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value) => {
+      (value): undefined => {
         results.push(value);
       },
       {
