@@ -38,9 +38,8 @@ export default function createProcessor<T, TReturn = unknown>(next: Next<T>, opt
     if (isProcessing) return;
     isProcessing = true;
 
-    let counter = 0;
     while (options.counter < options.concurrency) {
-      if (options.done || options.stop(counter++)) break;
+      if (options.done || !options.canProcess()) break;
       if (options.total >= options.limit) {
         processDone(null, options, callback);
         return;
