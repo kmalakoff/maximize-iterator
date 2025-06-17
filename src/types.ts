@@ -2,10 +2,10 @@ export type Callback = (err?: Error) => void;
 
 export interface ForEachOptions {
   error?: (err: Error) => boolean | undefined;
+  canProcess?: () => boolean;
   callbacks?: boolean;
   concurrency?: number;
   limit?: number;
-  batch?: number;
 }
 
 export type EachDoneCallback = (error?: Error, done?: boolean) => undefined;
@@ -21,7 +21,6 @@ export type ProcessCallback<T, TReturn = unknown> = (error?: Error, value?: Iter
 export type Processor = (doneOrError?: Error | boolean) => undefined;
 export interface ProcessorOptions<T> extends ForEachOptions {
   each: EachFunction<T>;
-  stop: (count?: number) => boolean;
   total: number;
   counter: number;
   done?: boolean;

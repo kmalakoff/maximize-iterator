@@ -5,18 +5,16 @@ import type { Callback, EachFunction, ForEachOptions, ProcessorOptions } from '.
 
 const DEFAULT_CONCURRENCY = 4096;
 const DEFAULT_LIMIT = Infinity;
-const MAXIMUM_BATCH = 10;
 
 export default function worker<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterator<T, TReturn, TNext> | AsyncIterable<T, TReturn, TNext> | AsyncIterableIterator<T, TReturn, TNext>, each: EachFunction<T>, options_: ForEachOptions, callback: Callback) {
   let options: ProcessorOptions<T> = {
     callbacks: options_.callbacks,
     concurrency: options_.concurrency || DEFAULT_CONCURRENCY,
     limit: options_.limit || DEFAULT_LIMIT,
-    batch: options_.batch || MAXIMUM_BATCH,
     // default is exit on error
     error: options_.error || (() => true),
     each,
-    stop: (counter) => counter > options.batch,
+    canProcess: options_.canProcess || (() => true),
     total: 0,
     counter: 0,
     done: false,
