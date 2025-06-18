@@ -33,14 +33,14 @@
   ],
   "scripts": {
     "build": "tsds build",
-    "format": "biome check --write --unsafe src/ test/",
+    "format": "biome check --write --unsafe",
     "test": "tsds test:node --no-timeouts",
     "test:engines": "nvu engines npm test",
     "version": "tsds version"
   },
   "dependencies": {
-    "async-compat": "^1.6.13",
-    "iterator-next-callback": "^2.0.0"
+    "async-compat": "^1.6.14",
+    "iterator-next-callback": "^2.0.1"
   },
   "devDependencies": {
     "@types/mocha": "*",
