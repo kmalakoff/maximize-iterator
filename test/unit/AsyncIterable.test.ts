@@ -1,8 +1,7 @@
 import assert from 'assert';
-import Pinkie from 'pinkie-promise';
-
 // @ts-ignore
 import maximizeIterator from 'maximize-iterator';
+import Pinkie from 'pinkie-promise';
 
 class Iterator<T> implements AsyncIterable<T> {
   values: T[];
