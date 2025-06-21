@@ -1,6 +1,6 @@
 import compat from 'async-compat';
 
-import type { EachDoneCallback, Next, Processor, ProcessorOptions } from './types.js';
+import type { EachDoneCallback, Next, Processor, ProcessorOptions } from './types.ts';
 
 const isError = (err?: Error): boolean => err && err.stack !== undefined && err.message !== undefined;
 
