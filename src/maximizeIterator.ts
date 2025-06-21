@@ -1,5 +1,5 @@
-import type { Callback, EachFunction, ForEachOptions, Iterator } from './types.js';
-import worker from './worker.js';
+import type { Callback, EachFunction, ForEachOptions, Iterator } from './types.ts';
+import worker from './worker.ts';
 
 export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterator<T, TReturn, TNext>, each: EachFunction<T>, callback: Callback): undefined;
 export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterator<T, TReturn, TNext>, each: EachFunction<T>, options: ForEachOptions, callback: Callback): undefined;
