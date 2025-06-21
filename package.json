@@ -39,8 +39,8 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "async-compat": "^1.6.15",
-    "iterator-next-callback": "^2.0.2"
+    "async-compat": "^1.6.16",
+    "iterator-next-callback": "^2.0.3"
   },
   "devDependencies": {
     "@types/mocha": "*",
