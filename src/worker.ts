@@ -1,7 +1,7 @@
 import nextCallback from 'iterator-next-callback';
-import createProcessor from './createProcessor.js';
+import createProcessor from './createProcessor.ts';
 
-import type { Callback, EachFunction, ForEachOptions, ProcessorOptions } from './types.js';
+import type { Callback, EachFunction, ForEachOptions, ProcessorOptions } from './types.ts';
 
 const DEFAULT_CONCURRENCY = 4096;
 const DEFAULT_LIMIT = Infinity;
