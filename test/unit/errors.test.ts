@@ -3,6 +3,10 @@ import assert from 'assert';
 import maximizeIterator from 'maximize-iterator';
 import Pinkie from 'pinkie-promise';
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: Legacy
+const Symbol: SymbolConstructor = typeof global.Symbol === 'undefined' ? ({ asyncIterator: '@@' } as unknown as SymbolConstructor) : global.Symbol;
+const _hasAsyncIterable = Symbol.asyncIterator === ('@@' as unknown);
+
 class Iterator<T> implements AsyncIterableIterator<T> {
   values: T[];
 
