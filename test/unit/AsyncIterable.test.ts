@@ -3,6 +3,10 @@ import assert from 'assert';
 import maximizeIterator from 'maximize-iterator';
 import Pinkie from 'pinkie-promise';
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: Legacy
+const Symbol: SymbolConstructor = typeof global.Symbol === 'undefined' ? ({ asyncIterator: undefined } as unknown as SymbolConstructor) : global.Symbol;
+const hasAsyncIterable = typeof Symbol !== 'undefined' && Symbol.asyncIterator !== undefined;
+
 class Iterator<T> implements AsyncIterable<T> {
   values: T[];
 
@@ -21,7 +25,8 @@ class Iterator<T> implements AsyncIterable<T> {
 }
 
 describe('AsyncIterable', () => {
-  if (typeof Symbol === 'undefined' || !Symbol.asyncIterator) return;
+  if (!hasAsyncIterable) return;
+
   (() => {
     // patch and restore promise
     if (typeof global === 'undefined') return;
@@ -33,12 +38,6 @@ describe('AsyncIterable', () => {
       global.Promise = globalPromise;
     });
   })();
-
-  // it('should get all (default options)', async () => {
-  //   const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  //   await maximizeIterator<number>(iterator, (_error?: Error): undefined => {});
-  //   assert.equal(iterator.values.length, 0);
-  // });
 
   it('should get all (concurrency 1)', async () => {
     const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
