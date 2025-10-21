@@ -1,5 +1,4 @@
 import assert from 'assert';
-// @ts-ignore
 import maximizeIterator from 'maximize-iterator';
 import Pinkie from 'pinkie-promise';
 
