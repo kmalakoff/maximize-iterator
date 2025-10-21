@@ -1,5 +1,4 @@
 import assert from 'assert';
-// @ts-ignore
 import maximizeIterator, { createProcessor } from 'maximize-iterator';
 
 describe('exports .ts', () => {
