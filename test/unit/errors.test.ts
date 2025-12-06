@@ -38,7 +38,7 @@ describe('errors', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(errors.length, 9);
