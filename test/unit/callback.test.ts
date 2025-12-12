@@ -24,7 +24,7 @@ describe('callback interface', () => {
       (_value: number): undefined => {},
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -46,7 +46,7 @@ describe('callback interface', () => {
       { callbacks: true },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -70,7 +70,7 @@ describe('callback interface', () => {
       { callbacks: true },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -93,7 +93,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -117,7 +117,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -142,7 +142,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 9);
@@ -188,7 +188,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 9);
@@ -213,7 +213,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 9);
@@ -238,7 +238,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 9);
@@ -261,7 +261,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 5);
@@ -286,7 +286,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 5);
@@ -311,7 +311,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 5);
@@ -335,7 +335,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -360,7 +360,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -385,7 +385,7 @@ describe('callback interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);

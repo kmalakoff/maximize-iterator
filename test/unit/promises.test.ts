@@ -38,7 +38,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         done();
@@ -57,7 +57,7 @@ describe('promises interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -78,7 +78,7 @@ describe('promises interface', () => {
       },
       (err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(iterator.values.length, 0);
@@ -107,7 +107,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         done();
@@ -134,7 +134,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         done();
@@ -162,7 +162,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         done();
@@ -191,7 +191,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         done();
@@ -219,7 +219,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         done();
@@ -272,7 +272,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
@@ -299,7 +299,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
@@ -326,7 +326,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
@@ -352,7 +352,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
@@ -379,7 +379,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
@@ -406,7 +406,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
@@ -432,7 +432,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
@@ -459,7 +459,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
@@ -486,7 +486,7 @@ describe('promises interface', () => {
       })
       .catch((err) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
       });
