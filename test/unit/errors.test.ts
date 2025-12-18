@@ -30,9 +30,9 @@ describe('errors', () => {
     const errors = [];
     maximizeIterator<number>(
       iterator,
-      (_value: number): undefined => {},
+      (_value: number): void => {},
       {
-        error(err: Error): undefined {
+        error(err: Error): void {
           errors.push(err);
         },
       },
