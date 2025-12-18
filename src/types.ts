@@ -8,17 +8,17 @@ export interface ForEachOptions {
   limit?: number;
 }
 
-export type EachDoneCallback = (error?: Error, done?: boolean) => undefined;
+export type EachDoneCallback = (error?: Error, done?: boolean) => void;
 export type EachValue<T> = (value: T) => boolean | undefined | Error;
-export type EachCallback<T> = (value: T, callback: EachDoneCallback) => undefined;
+export type EachCallback<T> = (value: T, callback: EachDoneCallback) => void;
 export type EachPromise<T> = (value: T) => Promise<boolean | undefined>;
 export type EachFunction<T> = EachValue<T> | EachCallback<T> | EachPromise<T>;
 
-export type NextCallback<T> = (error?: Error, value?: T | null) => undefined;
-export type Next<T> = (callback: ProcessCallback<T>) => undefined;
+export type NextCallback<T> = (error?: Error, value?: T | null) => void;
+export type Next<T> = (callback: ProcessCallback<T>) => void;
 
-export type ProcessCallback<T, TReturn = unknown> = (error?: Error, value?: IteratorResult<T, TReturn>) => undefined;
-export type Processor = (doneOrError?: Error | boolean) => undefined;
+export type ProcessCallback<T, TReturn = unknown> = (error?: Error, value?: IteratorResult<T, TReturn>) => void;
+export type Processor = (doneOrError?: Error | boolean) => void;
 export interface ProcessorOptions<T> extends ForEachOptions {
   each: EachFunction<T>;
   total: number;
