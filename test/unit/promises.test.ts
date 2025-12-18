@@ -232,7 +232,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
         throw Error('Stop');
       },
@@ -258,7 +258,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -284,7 +284,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -311,7 +311,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -338,7 +338,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -364,7 +364,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -391,7 +391,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -418,7 +418,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -444,7 +444,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -471,7 +471,7 @@ describe('promises interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {

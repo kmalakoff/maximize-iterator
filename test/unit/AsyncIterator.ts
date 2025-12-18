@@ -42,7 +42,7 @@ describe('AsyncIterator', () => {
     const results = [];
     await maximizeIterator<number>(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -59,7 +59,7 @@ describe('AsyncIterator', () => {
     const results = [];
     await maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
