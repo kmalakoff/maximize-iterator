@@ -21,7 +21,7 @@ describe('callback interface', () => {
 
     maximizeIterator<number>(
       iterator,
-      (_value: number): undefined => {},
+      (_value: number): void => {},
       (err) => {
         if (err) {
           done(err);
@@ -85,7 +85,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -109,7 +109,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -180,7 +180,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -204,7 +204,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -229,7 +229,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -253,7 +253,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -277,7 +277,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -302,7 +302,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -327,7 +327,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -351,7 +351,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {
@@ -376,7 +376,7 @@ describe('callback interface', () => {
     const results = [];
     maximizeIterator(
       iterator,
-      (value): undefined => {
+      (value): void => {
         results.push(value);
       },
       {

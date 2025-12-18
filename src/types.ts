@@ -1,7 +1,7 @@
 export type Callback = (err?: Error) => void;
 
 export interface ForEachOptions {
-  error?: (err: Error) => boolean | undefined;
+  error?: (err: Error) => boolean | void;
   canProcess?: () => boolean;
   callbacks?: boolean;
   concurrency?: number;
@@ -9,7 +9,7 @@ export interface ForEachOptions {
 }
 
 export type EachDoneCallback = (error?: Error, done?: boolean) => void;
-export type EachValue<T> = (value: T) => boolean | undefined | Error;
+export type EachValue<T> = (value: T) => boolean | void | Error;
 export type EachCallback<T> = (value: T, callback: EachDoneCallback) => void;
 export type EachPromise<T> = (value: T) => Promise<boolean | undefined>;
 export type EachFunction<T> = EachValue<T> | EachCallback<T> | EachPromise<T>;

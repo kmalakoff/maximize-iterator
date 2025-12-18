@@ -29,13 +29,13 @@ function processResult(err, keep, options, callback) {
 export default function createProcessor<T, TReturn = unknown>(next: Next<T>, options: ProcessorOptions<T>, callback: EachDoneCallback): Processor {
   let flushing = false;
 
-  function callDefer(err?: Error, keep?: boolean): undefined {
+  function callDefer(err?: Error, keep?: boolean): void {
     const shouldContinue = !processResult(err, keep, options, callback);
     if (flushing) return;
     if (shouldContinue) flush();
   }
 
-  function flush(): undefined {
+  function flush(): void {
     flushing = true;
 
     while (options.counter < options.concurrency) {
@@ -59,7 +59,7 @@ export default function createProcessor<T, TReturn = unknown>(next: Next<T>, opt
     flushing = false;
   }
 
-  return function processor(doneOrError?: Error | boolean): undefined {
+  return function processor(doneOrError?: Error | boolean): void {
     const error = doneOrError as Error;
     if (doneOrError && processDone(isError(error) ? error : null, options, callback)) return;
     flush();
