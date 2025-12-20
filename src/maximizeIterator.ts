@@ -17,11 +17,8 @@ export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(
 
 export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: Iterator<T, TReturn, TNext>, each: EachFunction<T>, options?: ForEachOptions | Callback, callback?: Callback): void | Promise<void> {
   if (typeof each !== 'function') throw new Error('Missing each function');
-  if (typeof options === 'function') {
-    callback = options as Callback;
-    options = {};
-  }
-  options = options || {};
+  callback = typeof options === 'function' ? options : callback;
+  options = typeof options === 'function' ? {} : ((options || {}) as ForEachOptions);
 
   if (typeof callback === 'function') {
     worker(iterator, each, options, callback);
