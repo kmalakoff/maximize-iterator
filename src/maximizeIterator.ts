@@ -20,9 +20,6 @@ export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(
   callback = typeof options === 'function' ? options : callback;
   options = typeof options === 'function' ? {} : ((options || {}) as ForEachOptions);
 
-  if (typeof callback === 'function') {
-    worker(iterator, each, options, callback);
-    return;
-  }
+  if (typeof callback === 'function') return worker(iterator, each, options, callback);
   return new Promise((resolve, reject) => worker(iterator, each, options, (err) => (err ? reject(err) : resolve())));
 }
