@@ -1,4 +1,4 @@
-export type Callback = (err?: Error) => void;
+export type Callback = (err?: Error | null) => void;
 
 export interface ForEachOptions {
   error?: (err: Error) => boolean | void;
@@ -8,23 +8,23 @@ export interface ForEachOptions {
   limit?: number;
 }
 
-export type EachDoneCallback = (error?: Error, done?: boolean) => void;
+export type EachDoneCallback = (error?: Error | null, done?: boolean) => void;
 export type EachValue<T> = (value: T) => boolean | void | Error;
 export type EachCallback<T> = (value: T, callback: EachDoneCallback) => void;
 export type EachPromise<T> = (value: T) => Promise<boolean | undefined>;
 export type EachFunction<T> = EachValue<T> | EachCallback<T> | EachPromise<T>;
 
-export type NextCallback<T> = (error?: Error, value?: T | null) => void;
+export type NextCallback<T> = (error?: Error | null, value?: T | null) => void;
 export type Next<T> = (callback: ProcessCallback<T>) => void;
 
-export type ProcessCallback<T, TReturn = unknown> = (error?: Error, value?: IteratorResult<T, TReturn>) => void;
+export type ProcessCallback<T, TReturn = unknown> = (error?: Error | null, value?: IteratorResult<T, TReturn>) => void;
 export type Processor = (doneOrError?: Error | boolean) => void;
 export interface ProcessorOptions<T> extends Omit<ForEachOptions, 'concurrency' | 'canProcess' | 'limit'> {
   each: EachFunction<T>;
   total: number;
   counter: number;
   done?: boolean;
-  err?: Error;
+  err?: Error | null;
   concurrency: number;
   canProcess: () => boolean;
   limit: number;

@@ -20,7 +20,7 @@ export default function worker<T, TReturn = unknown, TNext = unknown>(iterator: 
     done: false,
   };
 
-  let processor = createProcessor(nextCallback<T, TReturn, TNext>(iterator), options, (err?: Error) => {
+  let processor = createProcessor(nextCallback<T, TReturn, TNext>(iterator), options, (err?: Error | null) => {
     options = null as unknown as ProcessorOptions<T>;
     processor = null as unknown as Processor;
     callback(err);
