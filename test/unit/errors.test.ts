@@ -12,8 +12,8 @@ class Iterator<T> implements AsyncIterableIterator<T> {
   constructor(values: T[]) {
     this.values = values;
   }
-  next() {
-    return new Pinkie((resolve, reject) => {
+  next(): Promise<IteratorResult<T, null>> {
+    return new Pinkie<IteratorResult<T, null>>((resolve: (value: IteratorResult<T, null>) => void, reject: (reason?: unknown) => void) => {
       if (this.values.length) this.values.shift();
       return this.values.length > 0 ? reject(new Error('Failed')) : resolve({ done: true, value: null });
     });
@@ -27,7 +27,7 @@ describe('errors', () => {
   it('should filter errors', (done) => {
     const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const errors = [];
+    const errors: Error[] = [];
     maximizeIterator<number>(
       iterator,
       (_value: number): void => {},
@@ -37,10 +37,7 @@ describe('errors', () => {
         },
       },
       (err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         assert.equal(errors.length, 9);
         done();
       }

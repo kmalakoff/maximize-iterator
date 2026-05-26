@@ -1,7 +1,7 @@
 import nextCallback from 'iterator-next-callback';
 import createProcessor from './createProcessor.ts';
 
-import type { Callback, EachFunction, ForEachOptions, ProcessorOptions } from './types.ts';
+import type { Callback, EachFunction, ForEachOptions, Processor, ProcessorOptions } from './types.ts';
 
 const DEFAULT_CONCURRENCY = 4096;
 const DEFAULT_LIMIT = Infinity;
@@ -21,8 +21,8 @@ export default function worker<T, TReturn = unknown, TNext = unknown>(iterator: 
   };
 
   let processor = createProcessor(nextCallback<T, TReturn, TNext>(iterator), options, (err?: Error) => {
-    options = null;
-    processor = null;
+    options = null as unknown as ProcessorOptions<T>;
+    processor = null as unknown as Processor;
     callback(err);
   });
   processor();
