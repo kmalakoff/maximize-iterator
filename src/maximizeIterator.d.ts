@@ -1,0 +1,13 @@
+import type { Callback, EachFunction, ForEachOptions } from './types.ts';
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterator<T, TReturn, TNext>, each: EachFunction<T>, callback: Callback): void;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterator<T, TReturn, TNext>, each: EachFunction<T>, options: ForEachOptions, callback: Callback): void;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterable<T, TReturn, TNext>, each: EachFunction<T>, callback: Callback): void;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterable<T, TReturn, TNext>, each: EachFunction<T>, options: ForEachOptions, callback: Callback): void;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterableIterator<T, TReturn, TNext>, each: EachFunction<T>, callback: Callback): void;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterableIterator<T, TReturn, TNext>, each: EachFunction<T>, options: ForEachOptions, callback: Callback): void;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterator<T, TReturn, TNext>, each: EachFunction<T>): Promise<void>;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterator<T, TReturn, TNext>, each: EachFunction<T>, options: ForEachOptions): Promise<void>;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterable<T, TReturn, TNext>, each: EachFunction<T>): Promise<void>;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterable<T, TReturn, TNext>, each: EachFunction<T>, options: ForEachOptions): Promise<void>;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterableIterator<T, TReturn, TNext>, each: EachFunction<T>): Promise<void>;
+export default function maximizeIterator<T, TReturn = unknown, TNext = unknown>(iterator: AsyncIterableIterator<T, TReturn, TNext>, each: EachFunction<T>, options: ForEachOptions): Promise<void>;
