@@ -1,11 +1,11 @@
+import type { AsyncFunction } from 'async-compat';
 import compat from 'async-compat';
-
 import type { EachDoneCallback, Next, Processor, ProcessorOptions } from './types.ts';
 
-const isError = (err?: Error): boolean => err && err.stack !== undefined && err.message !== undefined;
+const isError = (err?: Error): boolean => !!err && err.stack !== undefined && err.message !== undefined;
 
-function processDone<T>(err: Error, options: ProcessorOptions<T>, callback: EachDoneCallback) {
-  options.err = options.err || err;
+function processDone<T>(err: Error | null | undefined, options: ProcessorOptions<T>, callback: EachDoneCallback): boolean {
+  if (err) options.err = options.err || err;
   options.done = true;
 
   if (!options.done || options.counter > 0) return false;
@@ -13,11 +13,11 @@ function processDone<T>(err: Error, options: ProcessorOptions<T>, callback: Each
   return true;
 }
 
-function processResult(err, keep, options, callback) {
+function processResult<T>(err: Error | null | undefined, keep: boolean | undefined, options: ProcessorOptions<T>, callback: EachDoneCallback): boolean {
   options.counter--;
 
-  if ((err && compat.defaultValue(options.error(err), false)) || (!err && !compat.defaultValue(keep, true))) {
-    options.err = options.err || err;
+  if ((err && compat.defaultValue(options.error?.(err), false)) || (!err && !compat.defaultValue(keep, true))) {
+    if (err) options.err = options.err || err;
     options.done = true;
   }
 
@@ -26,7 +26,7 @@ function processResult(err, keep, options, callback) {
   return true;
 }
 
-export default function createProcessor<T, TReturn = unknown>(next: Next<T>, options: ProcessorOptions<T>, callback: EachDoneCallback): Processor {
+export default function createProcessor<T, _TReturn = unknown>(next: Next<T>, options: ProcessorOptions<T>, callback: EachDoneCallback): Processor {
   let flushing = false;
 
   function callDefer(err?: Error, keep?: boolean): void {
@@ -41,18 +41,18 @@ export default function createProcessor<T, TReturn = unknown>(next: Next<T>, opt
     while (options.counter < options.concurrency) {
       if (options.done || !options.canProcess()) break;
       if (options.total >= options.limit) {
-        processDone(null, options, callback);
+        processDone(undefined, options, callback);
         flushing = false;
         return;
       }
       options.total++;
       options.counter++;
 
-      next((err?: Error, result?: IteratorResult<T, TReturn>) => {
-        if (err || result.done) {
+      next((err?: Error, result?: IteratorResult<T>) => {
+        if (err || !result || result.done) {
           return callDefer(err, false);
         }
-        compat.asyncFunction(options.each, options.callbacks, result.value, (err, keep) => callDefer(err, keep));
+        compat.asyncFunction(options.each as AsyncFunction, !!options.callbacks, result.value, (err?: Error, keep?: boolean) => callDefer(err, keep));
       });
     }
 
@@ -61,7 +61,7 @@ export default function createProcessor<T, TReturn = unknown>(next: Next<T>, opt
 
   return function processor(doneOrError?: Error | boolean): void {
     const error = doneOrError as Error;
-    if (doneOrError && processDone(isError(error) ? error : null, options, callback)) return;
+    if (doneOrError && processDone(isError(error) ? error : undefined, options, callback)) return;
     flush();
   };
 }

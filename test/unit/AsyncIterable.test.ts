@@ -14,9 +14,9 @@ class Iterator<T> implements AsyncIterable<T> {
   }
   [Symbol.asyncIterator](): AsyncIterator<T> {
     return {
-      next: () => {
-        return new Pinkie((resolve) => {
-          return resolve(this.values.length ? { done: false, value: this.values.shift() } : { done: true, value: null });
+      next: (): Promise<IteratorResult<T, null>> => {
+        return new Pinkie<IteratorResult<T, null>>((resolve: (value: IteratorResult<T, null>) => void) => {
+          return resolve(this.values.length ? { done: false, value: this.values.shift() as T } : { done: true, value: null });
         });
       },
     };
@@ -41,10 +41,10 @@ describe('AsyncIterable', () => {
   it('should get all (concurrency 1)', async () => {
     const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     await maximizeIterator<number>(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -58,10 +58,10 @@ describe('AsyncIterable', () => {
   it('should get all (concurrency 100)', async () => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     await maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -75,10 +75,10 @@ describe('AsyncIterable', () => {
   it('should get with promises (concurrency 1)', async () => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     await maximizeIterator(
       iterator,
-      async (value) => {
+      async (value: number) => {
         results.push(value);
         return true;
       },
@@ -93,10 +93,10 @@ describe('AsyncIterable', () => {
   it('should get with promises and early exit (concurrency 1)', async () => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     await maximizeIterator(
       iterator,
-      async (value) => {
+      async (value: number) => {
         if (value === 3) return false;
         results.push(value);
         return true;
