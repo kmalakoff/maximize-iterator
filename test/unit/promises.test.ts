@@ -8,9 +8,9 @@ class Iterator<T> implements AsyncIterator<T> {
   constructor(values: T[]) {
     this.values = values;
   }
-  next() {
-    return new Pinkie((resolve) => {
-      return resolve(this.values.length ? { done: false, value: this.values.shift() } : { done: true, value: null });
+  next(): Promise<IteratorResult<T, null>> {
+    return new Pinkie<IteratorResult<T, null>>((resolve: (value: IteratorResult<T, null>) => void) => {
+      return resolve(this.values.length ? { done: false, value: this.values.shift() as T } : { done: true, value: null });
     });
   }
 }
@@ -37,10 +37,7 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         done();
       });
   });
@@ -50,16 +47,13 @@ describe('promises interface', () => {
 
     maximizeIterator<number>(
       iterator,
-      (value, callback?): Promise<undefined> => {
+      (value: number, callback?: (...args: unknown[]) => void): Promise<undefined> => {
         assert.ok(value);
         assert.ok(!callback);
         return Promise.resolve(undefined);
       },
       (err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         assert.equal(iterator.values.length, 0);
         done();
       }
@@ -71,16 +65,13 @@ describe('promises interface', () => {
 
     maximizeIterator<number>(
       iterator,
-      (value: number, callback?): Promise<boolean> => {
+      (value: number, callback?: (...args: unknown[]) => void): Promise<boolean> => {
         assert.ok(value);
         assert.ok(!callback);
         return Promise.resolve(false);
       },
       (err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         assert.equal(iterator.values.length, 0);
         done();
       }
@@ -90,7 +81,7 @@ describe('promises interface', () => {
   it('should get all (concurrency 1)', (done) => {
     const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator<number>(
       iterator,
       async (value: number): Promise<undefined> => {
@@ -106,10 +97,7 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         done();
       });
   });
@@ -117,7 +105,7 @@ describe('promises interface', () => {
   it('should get all (concurrency 100)', (done) => {
     const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator<number>(
       iterator,
       async (value: number): Promise<undefined> => {
@@ -133,10 +121,7 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         done();
       });
   });
@@ -144,7 +129,7 @@ describe('promises interface', () => {
   it('should get with promises (concurrency 1)', (done) => {
     const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator<number>(
       iterator,
       (value: number): boolean => {
@@ -161,10 +146,7 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         done();
       });
   });
@@ -172,7 +154,7 @@ describe('promises interface', () => {
   it('should get with promises and early exit (concurrency 1)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
       (value: number): boolean => {
@@ -190,10 +172,7 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         done();
       });
   });
@@ -201,7 +180,7 @@ describe('promises interface', () => {
   it('should stop after 1 false (concurrency 1)', (done) => {
     const iterator = new Iterator<number>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator<number>(
       iterator,
       (value: number): boolean => {
@@ -218,10 +197,7 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
         done();
       });
   });
@@ -229,10 +205,10 @@ describe('promises interface', () => {
   it('should stop after 1 throw (concurrency 1)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
         throw Error('Stop');
       },
@@ -255,10 +231,10 @@ describe('promises interface', () => {
   it('limit 1 (concurrency default)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -271,20 +247,17 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 
   it('limit 1 (concurrency 1)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -298,20 +271,17 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 
   it('limit 1 (concurrency 10)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -325,20 +295,17 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 
   it('limit 5 (concurrency default)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -351,20 +318,17 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 
   it('limit 5 (concurrency 1)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -378,20 +342,17 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 
   it('limit 5 (concurrency 10)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -405,20 +366,17 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 
   it('limit 20 (concurrency default)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -431,20 +389,17 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 
   it('limit 20 (concurrency 1)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -458,20 +413,17 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 
   it('limit 20 (concurrency 10)', (done) => {
     const iterator = new Iterator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-    const results = [];
+    const results: number[] = [];
     maximizeIterator(
       iterator,
-      (value): void => {
+      (value: number): void => {
         results.push(value);
       },
       {
@@ -485,10 +437,7 @@ describe('promises interface', () => {
         done();
       })
       .catch((err) => {
-        if (err) {
-          done(err);
-          return;
-        }
+        if (err) return done(err);
       });
   });
 });
