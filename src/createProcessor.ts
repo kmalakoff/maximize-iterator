@@ -2,7 +2,7 @@ import type { AsyncFunction } from 'async-compat';
 import compat from 'async-compat';
 import type { EachDoneCallback, Next, Processor, ProcessorOptions } from './types.ts';
 
-const isError = (err?: Error): boolean => !!err && err.stack !== undefined && err.message !== undefined;
+const isError = (err?: Error | null): boolean => !!err && err.stack !== undefined && err.message !== undefined;
 
 function processDone<T>(err: Error | null | undefined, options: ProcessorOptions<T>, callback: EachDoneCallback): boolean {
   if (err) options.err = options.err || err;
@@ -29,7 +29,7 @@ function processResult<T>(err: Error | null | undefined, keep: boolean | undefin
 export default function createProcessor<T, _TReturn = unknown>(next: Next<T>, options: ProcessorOptions<T>, callback: EachDoneCallback): Processor {
   let flushing = false;
 
-  function callDefer(err?: Error, keep?: boolean): void {
+  function callDefer(err?: Error | null, keep?: boolean): void {
     const shouldContinue = !processResult(err, keep, options, callback);
     if (flushing) return;
     if (shouldContinue) flush();
@@ -48,11 +48,11 @@ export default function createProcessor<T, _TReturn = unknown>(next: Next<T>, op
       options.total++;
       options.counter++;
 
-      next((err?: Error, result?: IteratorResult<T>) => {
+      next((err?: Error | null, result?: IteratorResult<T>) => {
         if (err || !result || result.done) {
           return callDefer(err, false);
         }
-        compat.asyncFunction(options.each as AsyncFunction, !!options.callbacks, result.value, (err?: Error, keep?: boolean) => callDefer(err, keep));
+        compat.asyncFunction(options.each as AsyncFunction, !!options.callbacks, result.value, (err?: Error | null, keep?: boolean) => callDefer(err, keep));
       });
     }
 
