@@ -1,5 +1,4 @@
 var nextCallback = require('iterator-next-callback');
-var nextTick = require('next-tick');
 
 var createProcessor = require('./lib/createProcessor');
 
@@ -7,7 +6,7 @@ var DEFAULT_CONCURRENCY = 4096;
 var DEFAULT_LIMIT = Infinity;
 var MAXIMUM_BATCH = 10;
 
-module.exports = function maximizeIterator(iterator, fn, options, callback, skipNextTick) {
+module.exports = function maximizeIterator(iterator, fn, options, callback) {
   if (typeof fn !== 'function') throw new Error('Missing each function');
   if (typeof options === 'function') {
     callback = options;
@@ -37,20 +36,14 @@ module.exports = function maximizeIterator(iterator, fn, options, callback, skip
     var processor = createProcessor(nextCallback(iterator), options, function processorCallback(err) {
       options = null;
       processor = null;
-      skipNextTick ? callback(err) : nextTick(err ? callback.bind(null, err) : callback);
+      return callback(err);
     });
     processor();
   } else {
     return new Promise(function (resolve, reject) {
-      maximizeIterator(
-        iterator,
-        fn,
-        options,
-        function (err) {
-          err ? reject(err) : resolve();
-        },
-        true
-      );
+      maximizeIterator(iterator, fn, options, function (err) {
+        err ? reject(err) : resolve();
+      });
     });
   }
 };
