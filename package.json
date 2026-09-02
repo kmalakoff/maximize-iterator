@@ -1,6 +1,6 @@
 {
   "name": "maximize-iterator",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Maximize the parallel calls of an iterator supporting asyncIterator interface",
   "main": "index.js",
   "engines": {
