@@ -2,25 +2,30 @@
 
 Maximize the parallel calls of an iterator supporting asyncIterator interface.
 
+```sh
+npm install maximize-iterator
 ```
+
+```js
 const maximize = require('maximize-iterator');
 
-(async ()=> {
-  // run 1024 in parallel until done - promises
-  var iterator = // create it somehow with a next method returing {done: value: }
-  await maximize(iterator, (value) => { /* do something including false stop */ }, { concurrency: 1024, limit: Infinity, error: (err) => { return true; /* filter errors */ } });
-})();
+async function* values() {
+  yield* [1, 2, 3, 4];
+}
 
-// run 1024 in parallel until done - callbacks
-var iterator = // create it somehow with a next method returing {done: value: }
-maximize(iterator, (value) => { /* do something including false stop */ }, { concurrency: 1024, limit: Infinity,  error: (err) => { return true; /* filter errors */ } }, (err) => {
-  /* done */
-});
+async function main() {
+  const results = [];
+  await maximize(values(), (value) => results.push(value), { concurrency: 2 });
+  console.log(results); // [1, 2, 3, 4]
+}
+
+main().catch(console.error);
 ```
 
-**forEach Options**:
+## Options
 
 - bool: callbacks - use an each function with a callback `function(entry, callback)` (default: false)
-- number: concurrency - parallelism of processing. (default: Infinity)
+- function: error - handle iterator or item errors. Return true to stop processing (default: stop on error).
+- function: canProcess - return false to pause requesting more iterator values (default: always process).
+- number: concurrency - parallelism of processing. (default: 4096)
 - number: limit - maximum number to process. (default: Infinity)
-- number: batch - per batch count to limit expansion. (default: 10)
